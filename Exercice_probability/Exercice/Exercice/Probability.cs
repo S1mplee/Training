@@ -43,5 +43,13 @@ namespace Exercice
 
             return result;
         }
+
+        public Probability Inverse()
+        {
+
+            var result = Probability.Create(1- this._value);
+
+            return result;
+        }
     }
 }

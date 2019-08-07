@@ -63,5 +63,21 @@ namespace Tests
             Assert.True(expected.Equals(actual));
 
         }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(0.5)]
+        [InlineData(0.75)]
+        [InlineData(0.25)]
+        [InlineData(0.6)]
+        public void Inverse_ShouldWork(decimal num1)
+        {
+            var expected = Probability.Create(1 - num1);
+            var A = Probability.Create(num1);
+            var actual = A.Inverse();
+
+            Assert.True(expected.Equals(actual));
+
+        }
     }
 }
