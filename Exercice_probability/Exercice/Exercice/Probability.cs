@@ -22,11 +22,26 @@ namespace Exercice
             return new Probability(v);
         }
 
+
+
        public static bool Compare(Probability p,decimal d)
         {
             if (p._value == d) return true;
 
             return false;
+        }
+
+        public Probability And(Probability p)
+        {
+            var result = Probability.Create(p._value * this._value);
+            return result;
+        }
+
+        public Probability Or(Probability p)
+        {
+            var result = Probability.Create(this._value + p._value - this._value * p._value);
+
+            return result;
         }
     }
 }
