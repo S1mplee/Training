@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Eventstore
 {
-    public class SaleAchieved
+    public class SaleAchieved : Event
     {
         public Guid Id { get; set; }
         public string ProductName { get; set; }

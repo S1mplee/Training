@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Event.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />
