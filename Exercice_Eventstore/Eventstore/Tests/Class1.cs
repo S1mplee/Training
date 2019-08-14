@@ -75,5 +75,14 @@ namespace Tests
             }
             Assert.True(count > 0);
         }
+
+        [Fact]
+        public void TotalSales_ShouldWork()
+        {
+            var service = new SaleService();
+            decimal total = 0;
+            total = service.TotalSales();
+            Assert.True(total > 0);
+        }
     }
 }

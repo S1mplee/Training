@@ -62,6 +62,18 @@ namespace Eventstore
             return result;
         }
 
+        public decimal TotalSales()
+        {
+            decimal total = 0; 
+            var list = GetEvents("SalesStream");
+            foreach(var elem in list)
+            {
+                total += (elem.Price * elem.Qts);
+            }
+
+            return total;
+        }
+
 
     }
 
