@@ -31,5 +31,19 @@ namespace Tests
         {
             Assert.Throws<ArgumentException>(() => Sale.Create(Guid.NewGuid(), name, qts, price));
         }
+
+        [Fact]
+        public void WriteEvent_WithValidInputsShouldReturnTrue()
+        {
+            var service = new SaleService();
+            Assert.True(service.WriteEvent("Mouse",2,12.0m));
+        }
+
+        [Fact]
+        public void WriteEvent_WithInvalidValidInputsShouldThrowException()
+        {
+            var service = new SaleService();
+            Assert.Throws<ArgumentException>(() => service.WriteEvent("Mouse", -2, 12.0m));
+        }
     }
 }
