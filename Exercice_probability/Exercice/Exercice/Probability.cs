@@ -51,5 +51,17 @@ namespace Exercice
 
             return result;
         }
+
+        public override string ToString()
+        {
+            return "" + this._value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var p = (Probability)obj;
+            if (this._value == p._value) return true;
+            return false;
+        }
     }
 }

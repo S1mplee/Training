@@ -43,7 +43,7 @@ namespace Tests
             var B = Probability.Create(num2);
             var expected = Probability.Create(num1*num2);
             var C = B.And(A); // p4 should be equal to p3
-
+             
             Assert.True(C.Equals(expected));
         }
 
