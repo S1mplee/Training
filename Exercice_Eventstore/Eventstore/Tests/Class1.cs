@@ -61,5 +61,19 @@ namespace Tests
             var list = service.GetEvents("lalala");
             Assert.True(list.Count == 0);
         }
+
+        [Fact] 
+        public void GetProductsSold_ShouldWork()
+        {
+            int count = 0;
+            var service = new SaleService();
+            var list = service.GetProductsSold();
+            foreach(var e in list)
+            {
+                count++;
+                break;
+            }
+            Assert.True(count > 0);
+        }
     }
 }
