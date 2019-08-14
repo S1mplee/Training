@@ -1,0 +1,14 @@
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\Eventstore.exe.config
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\Eventstore.exe
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\Eventstore.pdb
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\EventStore.ClientAPI.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\Newtonsoft.Json.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\protobuf-net.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\EventStore.ClientAPI.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\Newtonsoft.Json.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\bin\Debug\protobuf-net.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\obj\Debug\Eventstore.csprojAssemblyReference.cache
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\obj\Debug\Eventstore.csproj.CoreCompileInputs.cache
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\obj\Debug\Eventstore.csproj.CopyComplete
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\obj\Debug\Eventstore.exe
+C:\Users\aboumellessa\Desktop\Training\Exercice_Eventstore\Eventstore\Eventstore\obj\Debug\Eventstore.pdb

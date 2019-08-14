@@ -25,5 +25,13 @@ namespace Eventstore
         {
             return "" + Id + " " + " " + ProductName + " " + Price + " " + Qts;
         }
+
+        public override bool Equals(object obj)
+        {
+            var ev = (SaleAchieved)obj;
+            if (this.Id.Equals(ev.Id) && this.ProductName == ev.ProductName && this.Price == ev.Price && this.Qts == ev.Qts) return true;
+            return false;
+        }
+
     }
 }
