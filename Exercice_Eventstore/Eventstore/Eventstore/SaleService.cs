@@ -29,5 +29,21 @@ namespace Eventstore
             return true;
         }
 
+        public IList<SaleAchieved> GetEvents(string Stream)
+        {
+            IList<SaleAchieved> list = new List<SaleAchieved>();
+            _conn.ConnectAsync().Wait();
+
+            var readEvents = _conn.ReadStreamEventsForwardAsync(Stream, 0, 100, true).Result;
+            foreach (var evt in readEvents.Events)
+            {
+                var res = evt.Event.ParseJson<SaleAchieved>();
+                list.Add(res);
+            }
+
+            return list;
+
+        }
+
     }
 }

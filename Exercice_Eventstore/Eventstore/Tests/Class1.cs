@@ -45,5 +45,21 @@ namespace Tests
             var service = new SaleService();
             Assert.Throws<ArgumentException>(() => service.WriteEvent("Mouse", -2, 12.0m));
         }
+
+        [Fact]
+        public void GetEvents_ShouldWorkWithValidStreamName()
+        {
+            var service = new SaleService();
+            var list = service.GetEvents("SalesStream");
+            Assert.True(list.Count > 0);
+        }
+
+        [Fact]
+        public void GetEvents_ShouldFailWithInvalidStreamName()
+        {
+            var service = new SaleService();
+            var list = service.GetEvents("lalala");
+            Assert.True(list.Count == 0);
+        }
     }
 }
