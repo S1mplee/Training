@@ -9,7 +9,7 @@ using EventStore.ClientAPI;
 
 namespace DDD.DomainService
 {
-    public class Repository<T> : IRepository<T> where T : AggregateRoot
+    public class Repository<T> : IRepository<T> where T : AggregateRoot , new()
     {
         private IEventStoreConnection _conn;
         private string _address;
@@ -22,9 +22,59 @@ namespace DDD.DomainService
             _conn = EventStoreConnection.Create(new IPEndPoint(IPAddress.Parse(_address), _port));
             _conn.ConnectAsync().Wait();
         }
-        public T GetbyID(Guid id)
+        public AggregateRoot GetbyID(string id)
         {
-            throw new NotImplementedException();
+            var readEvents = _conn.ReadStreamEventsForwardAsync("AccountBalance", 0, 100, true).Result;
+            var acc = new AccountBalance();
+            foreach(var evt in readEvents.Events)
+            {
+                if (evt.Event.EventType.Equals("AccountCreated"))
+                {
+                    var res = evt.Event.ParseJson<AccountCreated>();
+                    if(res.Id.ToString() == id )
+                    acc.Create(res.Id, res._holderName, res._overdraftLimit, res._wireTransertLimit, res._cash);
+                }
+                if (evt.Event.EventType.Equals("CashDeposed"))
+                {
+                    var res = evt.Event.ParseJson<CashDeposed>();
+                    if (res.AccountId.ToString() == id)
+                        acc.DeposeCash(res.Amount);
+                }
+                if (evt.Event.EventType.Equals("ChequeDeposed"))
+                {
+                    var res = evt.Event.ParseJson<ChequeDeposed>();
+                    if (res.AccountId.ToString() == id)
+                        acc.DeposeCheque(res.Amount);
+                }
+                if (evt.Event.EventType.Equals("CashTransfered"))
+                {
+                    var res = evt.Event.ParseJson<CashTransfered>();
+                    if (res.AccountId.ToString() == id)
+                        acc.WireTransfer(res.receiverId, res.Amount);
+                }
+                if (evt.Event.EventType.Equals("AccountBlocked"))
+                {
+                    var res = evt.Event.ParseJson<AccountBlocked>();
+                    if (res.AccountId.ToString() == id)
+                        acc.blocked();
+                   // acc.acc(res.receiverId, res.Amount);
+                }
+                if (evt.Event.EventType.Equals("AccountUnBlocked"))
+                {
+                    var res = evt.Event.ParseJson<AccountUnBlocked>();
+                    if (res.AccountId.ToString() == id)
+                        acc.UnBlocked();
+                    // acc.acc(res.receiverId, res.Amount);
+                }
+                if (evt.Event.EventType.Equals("CashWithdrawn"))
+                {
+                    var res = evt.Event.ParseJson<CashWithdrawn>();
+                    if (res.AccountId.ToString() == id)
+                        acc.WithdrawCash(res.Amount);
+                    // acc.acc(res.receiverId, res.Amount);
+                }
+            }
+            return acc;
         }
 
         public void SaveEvents(AggregateRoot agg)

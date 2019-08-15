@@ -35,8 +35,8 @@ public class AccountCreated : Event
 }
 public class CashDeposed : Event
 {
-    public readonly Guid AccountId ;
-    public readonly decimal Amount;
+    public  Guid AccountId ;
+    public  decimal Amount;
 
     public CashDeposed(Guid id,decimal a)
     {
@@ -52,8 +52,8 @@ public class CashDeposed : Event
 
 public class ChequeDeposed : Event
 {
-    public readonly Guid AccountId;
-    public readonly decimal Amount;
+    public  Guid AccountId;
+    public  decimal Amount;
 
     public ChequeDeposed(Guid id, decimal a)
     {
@@ -69,8 +69,8 @@ public class ChequeDeposed : Event
 
 public class CashWithdrawn : Event
 {
-    public readonly Guid AccountId;
-    public readonly decimal Amount;
+    public  Guid AccountId;
+    public  decimal Amount;
 
     public CashWithdrawn(Guid id, decimal a)
     {
@@ -86,7 +86,7 @@ public class CashWithdrawn : Event
 
 public class AccountBlocked : Event
 {
-    public readonly Guid AccountId;
+    public  Guid AccountId;
     public AccountBlocked(Guid id)
     {
         this.AccountId = id;
@@ -100,7 +100,7 @@ public class AccountBlocked : Event
 
 public class AccountUnBlocked : Event
 {
-    public readonly Guid AccountId;
+    public Guid AccountId;
     public AccountUnBlocked(Guid id)
     {
         this.AccountId = id;
@@ -113,9 +113,9 @@ public class AccountUnBlocked : Event
 
 public class CashTransfered : Event
 {
-    public readonly Guid AccountId;
-    public readonly Guid receiverId;
-    public readonly decimal Amount;
+    public  Guid AccountId;
+    public  Guid receiverId;
+    public  decimal Amount;
 
     public CashTransfered(Guid id,Guid id2,decimal d)
     {

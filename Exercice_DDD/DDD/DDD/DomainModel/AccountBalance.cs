@@ -40,7 +40,7 @@ namespace DDD.DomainModel
             
             if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraftLimit) || this._cash >= 0))
             {
-                this._blocked = false;
+                UnBlocked();
                 this.events.Add(new AccountUnBlocked(this.Id));
             }
         }
@@ -54,9 +54,14 @@ namespace DDD.DomainModel
 
             if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraftLimit) || this._cash >= 0))
             {
-                this._blocked = false;
+                UnBlocked();
                 this.events.Add(new AccountUnBlocked(this.Id));
             }
+        }
+
+        public void UnBlocked()
+        {
+            this._blocked = false;
         }
 
         public void WithdrawCash(decimal amount)
@@ -64,13 +69,18 @@ namespace DDD.DomainModel
             if (amount <= 0) throw new ArgumentException("invalid Amount");
             if ((this._cash - amount) < 0  && Math.Abs(this._cash - amount) > this._overdraftLimit)
             {
-                this._blocked = true;
+                blocked();
                 this.events.Add(new AccountBlocked(this.Id));
                 throw new ArgumentException("OverDraft limit !");
             }
 
             this._cash = this._cash - amount;
             this.events.Add(new CashWithdrawn(this.Id, amount));
+        }
+
+        public void blocked()
+        {
+            this._blocked = true;
         }
 
         public void WireTransfer(Guid reciverId,decimal amount)
@@ -82,7 +92,7 @@ namespace DDD.DomainModel
 
             if (amount > this._wireTransertLimit)
             {
-                this._blocked = true;
+                blocked();
                 this.events.Add(new AccountBlocked(this.Id));
             }
         }

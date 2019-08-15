@@ -10,6 +10,6 @@ namespace DDD.DomainService
     interface IRepository<T> where T: AggregateRoot
     {
         void SaveEvents(AggregateRoot agg);
-        T GetbyID(Guid id);
+        AggregateRoot GetbyID(string id);
     }
 }
