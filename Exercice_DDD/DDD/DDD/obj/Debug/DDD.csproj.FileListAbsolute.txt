@@ -1,0 +1,7 @@
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\DDD.exe.config
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\DDD.exe
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\DDD.pdb
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.csprojAssemblyReference.cache
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.csproj.CoreCompileInputs.cache
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.exe
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.pdb
