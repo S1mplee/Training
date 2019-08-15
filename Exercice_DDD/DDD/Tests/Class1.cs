@@ -69,9 +69,42 @@ namespace Tests
             var acc = new AccountBalance();
             var g = Guid.NewGuid();
             acc.Create(g, "Mohamed", 500, 200, -1000); // event1
-            acc.DeposeCheque(d);
+            acc.DeposeCheque(d); // should generate two events
 
             Assert.True(acc.events.Count == 3);
+        }
+
+        [Theory]
+        [InlineData(800)]
+        [InlineData(750)]
+        [InlineData(1000)]
+        [InlineData(1500)]
+        [InlineData(1400)]
+        [InlineData(1499)]
+        public void WithdrawhCash_ShouldWorkWithValidamount(decimal d)
+        {
+            var acc = new AccountBalance();
+            var g = Guid.NewGuid();
+            acc.Create(g, "Mohamed", 500, 200, 1000); // event1
+            acc.WithdrawCash(d); // event2
+
+            Assert.True(acc.events.Count == 2);
+        }
+
+        [Theory]
+        
+        [InlineData(1501)]
+        [InlineData(1600)]
+        [InlineData(3000)]
+        public void WithdrawCash_ShouldThrowException_IfAmountInvalid(decimal d)
+        {
+            var acc = new AccountBalance();
+            var g = Guid.NewGuid();
+            acc.Create(g, "Mohamed", 500, 200, 1000); // event1
+
+            Assert.Throws<ArgumentException>(() => acc.WithdrawCash(d)); // event2
+            Assert.True(acc.events.Count == 2);
+
         }
     }
 }

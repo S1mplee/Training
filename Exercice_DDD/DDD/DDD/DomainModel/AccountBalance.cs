@@ -35,7 +35,7 @@ namespace DDD.DomainModel
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
             this._cash += amount;
-            this.events.Add(new CashDeposed(this.Id, amount));
+            this.events.Add(new ChequeDeposed(this.Id, amount));
 
             
             if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraftLimit) || this._cash >= 0))
@@ -43,6 +43,33 @@ namespace DDD.DomainModel
                 this._blocked = false;
                 this.events.Add(new AccountUnBlocked(this.Id));
             }
+        }
+
+        public void DeposeCash(decimal amount)
+        {
+            if (amount <= 0) throw new ArgumentException("invalid Amount");
+            this._cash += amount;
+            this.events.Add(new CashDeposed(this.Id, amount));
+
+
+            if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraftLimit) || this._cash >= 0))
+            {
+                this._blocked = false;
+                this.events.Add(new AccountUnBlocked(this.Id));
+            }
+        }
+
+        public void WithdrawCash(decimal amount)
+        {
+            if ((this._cash - amount) < 0  && Math.Abs(this._cash - amount) > this._overdraftLimit)
+            {
+                this._blocked = true;
+                this.events.Add(new AccountBlocked(this.Id));
+                throw new ArgumentException("OverDraft limit !");
+            }
+
+            this._cash = this._cash - amount;
+            this.events.Add(new CashWithdrawn(this.Id, amount));
         }
 
 
