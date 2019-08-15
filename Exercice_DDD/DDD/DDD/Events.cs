@@ -27,6 +27,11 @@ public class AccountCreated : Event
         this._blocked = b;
         this._cash = d3;
     }
+
+    public override string ToString()
+    {
+        return "" + Id + " " + _holderName + " " + _overdraftLimit + " " + _wireTransertLimit + " " + _blocked + " " + _cash;
+    }
 }
 public class CashDeposed : Event
 {
@@ -37,6 +42,11 @@ public class CashDeposed : Event
     {
         this.AccountId = id;
         this.Amount = a;
+    }
+
+    public override string ToString()
+    {
+        return "" + AccountId + " " + Amount;
     }
 }
 
@@ -50,6 +60,11 @@ public class ChequeDeposed : Event
         this.AccountId = id;
         this.Amount = a;
     }
+
+    public override string ToString()
+    {
+        return "" + AccountId + " " + Amount;
+    }
 }
 
 public class CashWithdrawn : Event
@@ -62,6 +77,11 @@ public class CashWithdrawn : Event
         this.AccountId = id;
         this.Amount = a;
     }
+
+    public override string ToString()
+    {
+        return "" + AccountId + " " + Amount;
+    }
 }
 
 public class AccountBlocked : Event
@@ -71,6 +91,11 @@ public class AccountBlocked : Event
     {
         this.AccountId = id;
     }
+
+    public override string ToString()
+    {
+        return "" + AccountId;
+    }
 }
 
 public class AccountUnBlocked : Event
@@ -79,6 +104,10 @@ public class AccountUnBlocked : Event
     public AccountUnBlocked(Guid id)
     {
         this.AccountId = id;
+    }
+    public override string ToString()
+    {
+        return "" + AccountId;
     }
 }
 
@@ -93,6 +122,10 @@ public class CashTransfered : Event
         this.AccountId = id;
         this.receiverId = id2;
         this.Amount = d;
+    }
+    public override string ToString()
+    {
+        return "" + AccountId + " " + Amount + " "+receiverId;
     }
 }
 

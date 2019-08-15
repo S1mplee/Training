@@ -87,6 +87,11 @@ namespace DDD.DomainModel
             }
         }
 
+        public override string ToString()
+        {
+            return "" + Id + " Name :" + _holderName + " cash: " + _cash + " Overdraft :" + _overdraftLimit + " Wire :" + _wireTransertLimit + " Blocked :" + _blocked;
+        }
+
 
 
     }

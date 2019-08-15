@@ -5,3 +5,10 @@ C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.csproj
 C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.csproj.CoreCompileInputs.cache
 C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.exe
 C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.pdb
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\EventStore.ClientAPI.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\Newtonsoft.Json.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\protobuf-net.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\EventStore.ClientAPI.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\Newtonsoft.Json.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\bin\Debug\protobuf-net.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\DDD\obj\Debug\DDD.csproj.CopyComplete

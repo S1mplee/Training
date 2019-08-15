@@ -18,3 +18,9 @@ C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\obj\Debug\Tests.cs
 C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\obj\Debug\Tests.csproj.CopyComplete
 C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\obj\Debug\Tests.dll
 C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\obj\Debug\Tests.pdb
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\bin\Debug\EventStore.ClientAPI.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\bin\Debug\protobuf-net.dll
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\bin\Debug\EventStore.ClientAPI.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\aboumellessa\Desktop\Training\Exercice_DDD\DDD\Tests\bin\Debug\protobuf-net.xml
