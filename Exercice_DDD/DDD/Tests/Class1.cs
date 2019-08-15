@@ -106,5 +106,41 @@ namespace Tests
             Assert.True(acc.events.Count == 2);
 
         }
+
+        [Theory]
+
+        [InlineData(100)]
+        [InlineData(199)]
+        [InlineData(50)]
+        public void WireTransfer_SHouldGenerateOneEvent_IfAmountValid(decimal d)
+        {
+            var acc = new AccountBalance();
+            var g = Guid.NewGuid();
+            var g2 = Guid.NewGuid();
+            acc.Create(g, "Mohamed", 500, 200, 1000);
+            acc.WireTransfer(g2, d);
+
+            Assert.True(acc.events.Count == 2);
+
+
+        }
+
+        [Theory]
+
+        [InlineData(201)]
+        [InlineData(300)]
+        [InlineData(400)]
+        public void WireTransfer_SHouldGeneratetwoEvent_IfAmountInValid(decimal d)
+        {
+            var acc = new AccountBalance();
+            var g = Guid.NewGuid();
+            var g2 = Guid.NewGuid();
+            acc.Create(g, "Mohamed", 500, 200, 1000);
+            acc.WireTransfer(g2, d);
+
+            Assert.True(acc.events.Count == 3);
+
+
+        }
     }
 }

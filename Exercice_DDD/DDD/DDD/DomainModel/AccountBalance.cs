@@ -61,6 +61,7 @@ namespace DDD.DomainModel
 
         public void WithdrawCash(decimal amount)
         {
+            if (amount <= 0) throw new ArgumentException("invalid Amount");
             if ((this._cash - amount) < 0  && Math.Abs(this._cash - amount) > this._overdraftLimit)
             {
                 this._blocked = true;
@@ -70,6 +71,20 @@ namespace DDD.DomainModel
 
             this._cash = this._cash - amount;
             this.events.Add(new CashWithdrawn(this.Id, amount));
+        }
+
+        public void WireTransfer(Guid reciverId,decimal amount)
+        {
+            if (amount <= 0) throw new ArgumentException("invalid Amount");
+
+            this._cash = this._cash - amount;
+            this.events.Add(new CashTransfered(this.Id, reciverId, amount));
+
+            if (amount > this._wireTransertLimit)
+            {
+                this._blocked = true;
+                this.events.Add(new AccountBlocked(this.Id));
+            }
         }
 
 
