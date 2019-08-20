@@ -26,6 +26,7 @@ namespace DDD
         public void Handle(ChequeDepose cmd)
         {
             AccountBalance acc = (AccountBalance) _repo.GetbyID(cmd.accountId.ToString());
+            if (acc == null) throw new InvalidOperationException("Does not Exist");
             acc.DeposeCheque(cmd.Amount);
             _repo.SaveEvents(acc);
         }
@@ -33,6 +34,7 @@ namespace DDD
         public void Handle(CashDepose cmd)
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.accountId.ToString());
+            if (acc == null) throw new InvalidOperationException("Does not Exist");
             acc.DeposeCash(cmd.Amount);
             _repo.SaveEvents(acc);
         }
@@ -40,6 +42,7 @@ namespace DDD
         public void Handle(CashWithdraw cmd)
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.accountId.ToString());
+            if (acc == null) throw new InvalidOperationException("Does not Exist");
             acc.WithdrawCash(cmd.Amount);
             _repo.SaveEvents(acc);
         }
@@ -47,6 +50,7 @@ namespace DDD
         public void Handle(CashTransfer cmd)
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.accountId.ToString());
+            if (acc == null) throw new InvalidOperationException("Does not Exist");
             acc.WireTransfer(cmd.receiverId, cmd.Amount);
             _repo.SaveEvents(acc);
         }

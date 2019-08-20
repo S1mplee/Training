@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Event
+public class Event : Message
 {
 
 }
@@ -127,5 +127,11 @@ public class CashTransfered : Event
     {
         return "" + AccountId + " " + Amount + " "+receiverId;
     }
+
+}
+
+public class Message
+{
+
 }
 

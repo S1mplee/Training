@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusMessage.cs" />
     <Compile Include="CommandHandler.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="DomainModel\AccountBalance.cs" />
