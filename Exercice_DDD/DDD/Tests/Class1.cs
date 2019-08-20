@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DDD.DomainModel;
+using System;
 using System.Threading.Tasks;
 using Xunit;
-using DDD.DomainModel;
+using Xunit.ScenarioReporting;
+
 namespace Tests
 {
     public class Class1
@@ -24,13 +23,16 @@ namespace Tests
         [InlineData("mohamed", 5000, 20000,236)]
         [InlineData("mohamed", 500, 2000,689)]
         [InlineData("mohamed", 5000.60, 20000.50,565)]
-        public void Create_WithValidInputsShouldGenerateEvent(string n, decimal d, decimal d2,decimal d3)
+        public async Task Create_WithValidInputsShouldGenerateEvent(string n, decimal d, decimal d2,decimal d3)
         {
+            var sc = new ScenarioRunner1();
             var g = Guid.NewGuid();
-            var acc = new AccountBalance();
-            acc.Create(g, n, d, d2,d3);
+            var cmd = new AccountCreate(g, n, d, d2, d3);
+            var evt = new AccountCreated(g, n, d, d2, d3, false);
 
-            Assert.True(acc.events.Count > 0);
+            await sc.Run(def => def.Given()
+            .When(cmd)
+            .Then(evt));
         }
 
         [Theory]
@@ -49,14 +51,19 @@ namespace Tests
         [InlineData(652)]
         [InlineData(750)]
         [InlineData(1000)]
-        public void DeposeCheque_AccountUnblocked_WithValidAmount_ShouldGenerateOneEvent(decimal d)
+        public async Task DeposeCheque_AccountUnblocked_WithValidAmount_ShouldGenerateOneEvent(decimal d)
         {
-            var acc = new AccountBalance();
-            var g = Guid.NewGuid();
-            acc.Create(g, "Mohamed", 500, 200, 1000); // event1
-            acc.DeposeCheque(d); // event 2
+            var sc = new ScenarioRunner2();
 
-            Assert.True(acc.events.Count == 2);
+            var g = Guid.NewGuid();
+
+            var cmd = new ChequeDepose(g,d);
+            var evt = new ChequeDeposed(g, d);
+
+
+            await sc.Run(def => def.Given()
+            .When(cmd)
+            .Then(evt));
         }
 
         [Theory]
@@ -64,14 +71,17 @@ namespace Tests
         [InlineData(750)]
         [InlineData(1000)]
         [InlineData(2000)]
-        public void DeposeCheque_AccountBlocked_WithValidAmount_ShouldUnBlockAccount(decimal d)
+        public async Task DeposeCheque_AccountBlocked_WithValidAmount_ShouldUnBlockAccount(decimal d)
         {
-            var acc = new AccountBalance();
-            var g = Guid.NewGuid();
-            acc.Create(g, "Mohamed", 500, 200, -1000); // event1
-            acc.DeposeCheque(d); // should generate two events
+            var sc = new ScenarioRunner3();
 
-            Assert.True(acc.events.Count == 3);
+            var g = Guid.NewGuid();
+            var cmd = new ChequeDepose(g, d);
+            var evt = new AccountUnBlocked(g);
+
+            await sc.Run(def => def.Given()
+           .When(cmd)
+           .Then(evt));
         }
 
         [Theory]
@@ -81,14 +91,16 @@ namespace Tests
         [InlineData(1500)]
         [InlineData(1400)]
         [InlineData(1499)]
-        public void WithdrawhCash_ShouldWorkWithValidamount(decimal d)
+        public async Task WithdrawhCash_ShouldWorkWithValidamount(decimal d)
         {
-            var acc = new AccountBalance();
+            var sc = new ScenarioRunner4();
             var g = Guid.NewGuid();
-            acc.Create(g, "Mohamed", 500, 200, 1000); // event1
-            acc.WithdrawCash(d); // event2
+            var cmd = new CashWithdraw(g, d);
+            var evt = new CashWithdrawn(g, d); // event2
 
-            Assert.True(acc.events.Count == 2);
+            await sc.Run(def => def.Given()
+           .When(cmd)
+           .Then(evt));
         }
 
         [Theory]
@@ -96,14 +108,19 @@ namespace Tests
         [InlineData(1501)]
         [InlineData(1600)]
         [InlineData(3000)]
-        public void WithdrawCash_ShouldThrowException_IfAmountInvalid(decimal d)
+        public async Task WithdrawCash_ShouldThrowException_AndGenerateanEvent_IfAmountInvalid(decimal d)
         {
+            var sc = new ScenarioRunner6();
             var acc = new AccountBalance();
-            var g = Guid.NewGuid();
-            acc.Create(g, "Mohamed", 500, 200, 1000); // event1
 
-            Assert.Throws<ArgumentException>(() => acc.WithdrawCash(d)); // event2
-            Assert.True(acc.events.Count == 2);
+            var g = Guid.NewGuid();
+            var cmd = new CashWithdraw(g, d);
+            var evt = new AccountBlocked(g);
+            Assert.Throws<ArgumentException>(() => acc.WithdrawCash(d));
+
+            await sc.Run(def => def.Given()
+          .When(cmd)
+          .Then(evt));
 
         }
 
@@ -112,16 +129,20 @@ namespace Tests
         [InlineData(100)]
         [InlineData(199)]
         [InlineData(50)]
-        public void WireTransfer_SHouldGenerateOneEvent_IfAmountValid(decimal d)
+        public async Task WireTransfer_SHouldGenerateOneEvent_IfAmountValid(decimal d)
         {
+            var sc = new ScenarioRunner7();
+ 
             var acc = new AccountBalance();
             var g = Guid.NewGuid();
             var g2 = Guid.NewGuid();
-            acc.Create(g, "Mohamed", 500, 200, 1000);
-            acc.WireTransfer(g2, d);
 
-            Assert.True(acc.events.Count == 2);
+            var cmd = new CashTransfer(g, g2, d);
+            var evt = new CashTransfered(g, g2, d);
 
+            await sc.Run(def => def.Given()
+         .When(cmd)
+         .Then(evt));
 
         }
 
@@ -130,15 +151,22 @@ namespace Tests
         [InlineData(201)]
         [InlineData(300)]
         [InlineData(400)]
-        public void WireTransfer_SHouldGeneratetwoEvent_IfAmountInValid(decimal d)
+        public async Task WireTransfer_SHouldGeneratetwoEvent_IfAmountInValid(decimal d)
         {
+            var sc = new ScenarioRunner8();
+
             var acc = new AccountBalance();
             var g = Guid.NewGuid();
             var g2 = Guid.NewGuid();
-            acc.Create(g, "Mohamed", 500, 200, 1000);
-            acc.WireTransfer(g2, d);
+            var cmd = new CashTransfer(g, g2, d);
+            var evt1 = new CashTransfered(g, g2, d);
+            var evt2 = new AccountBlocked(g);
 
-            Assert.True(acc.events.Count == 3);
+
+            await sc.Run(def => def.Given()
+           .When(cmd)
+            .Then(evt1,evt2));
+
 
 
         }
