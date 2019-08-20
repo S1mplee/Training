@@ -1,7 +1,0 @@
-C:\Users\aboumellessa\Desktop\Training\Exercice_probability\Exercice\Exercice\bin\Debug\Exercice.exe.config
-C:\Users\aboumellessa\Desktop\Training\Exercice_probability\Exercice\Exercice\bin\Debug\Exercice.exe
-C:\Users\aboumellessa\Desktop\Training\Exercice_probability\Exercice\Exercice\bin\Debug\Exercice.pdb
-C:\Users\aboumellessa\Desktop\Training\Exercice_probability\Exercice\Exercice\obj\Debug\Exercice.csprojAssemblyReference.cache
-C:\Users\aboumellessa\Desktop\Training\Exercice_probability\Exercice\Exercice\obj\Debug\Exercice.csproj.CoreCompileInputs.cache
-C:\Users\aboumellessa\Desktop\Training\Exercice_probability\Exercice\Exercice\obj\Debug\Exercice.exe
-C:\Users\aboumellessa\Desktop\Training\Exercice_probability\Exercice\Exercice\obj\Debug\Exercice.pdb
