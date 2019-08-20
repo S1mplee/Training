@@ -12,6 +12,7 @@ namespace Eventstore
     {
         static void Main(string[] args)
         {
+            
             var service = new SaleService();
             var menu = new Menu(service);
             menu.show();

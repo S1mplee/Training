@@ -1,14 +1,10 @@
 ﻿using Eventstore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Tests
 {
-    public class Class1
+    public class Test
     {
         [Theory]
         [InlineData("Car",2,2.0)]
@@ -18,9 +14,9 @@ namespace Tests
         public void Create_WithValidInputShouldReturnSaleAchievedEvent(string name,int qts,decimal price)
         {
             var g = Guid.NewGuid();
-            var evt = new SaleAchieved(g, name, qts, price);
-            var evt2 = Sale.Create(g, name, qts, price);
-            Assert.True(evt.Equals(evt2));
+            var expected = new SaleAchieved(g, name, qts, price);
+            var result = Sale.Create(g, name, qts, price);
+            Assert.True(expected.Equals(result));
         }
 
         [Theory]
@@ -80,9 +76,9 @@ namespace Tests
         public void TotalSales_ShouldWork()
         {
             var service = new SaleService();
-            decimal total = 0;
+            decimal total = -1 ;
             total = service.TotalSales();
-            Assert.True(total > 0);
+            Assert.True(total > -1);
         }
     }
 }

@@ -1,16 +1,14 @@
 ﻿using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Eventstore
 {
     public static class Extension
     {
-        // this method Convert Object to json
+        // this method Convert Object to json EventData 
         public static EventData AsJson(this object value)
         {
             if (value == null) throw new ArgumentNullException("value");

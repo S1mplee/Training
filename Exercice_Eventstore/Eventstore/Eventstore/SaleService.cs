@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Eventstore
 {
@@ -13,6 +12,12 @@ namespace Eventstore
         private IEventStoreConnection _conn;
         private string _address;
         private int _port;
+
+        public SaleService(string address,int port)
+        {
+            _address = address;
+            _port = port;
+        }
 
         public SaleService()
         {
@@ -25,8 +30,8 @@ namespace Eventstore
         // Write an event to eventstore ()
         public bool WriteEvent(string name,int qts , decimal price)
         {
-            var ev = Sale.Create(Guid.NewGuid(), name,qts, price);
-            _conn.AppendToStreamAsync("SalesStream", ExpectedVersion.Any, ev.AsJson()).Wait();
+            var Event = Sale.Create(Guid.NewGuid(), name,qts, price);
+            _conn.AppendToStreamAsync("SalesStream", ExpectedVersion.Any, Event.AsJson()).Wait();
             return true;
         }
 
@@ -35,14 +40,26 @@ namespace Eventstore
         {
             IList<SaleAchieved> list = new List<SaleAchieved>();
 
-            var readEvents = _conn.ReadStreamEventsForwardAsync(Stream, 1, 100, true).Result;
-            foreach (var evt in readEvents.Events)
+            StreamEventsSlice currentSlice;
+            var nextSliceStart = StreamPosition.Start;
+            do
             {
-                var res = evt.Event.ParseJson<SaleAchieved>();
-                list.Add(res);
-            }
+                currentSlice =
+                _conn.ReadStreamEventsForwardAsync(Stream, nextSliceStart,
+                                                              1, false)
+                                                              .Result;
 
+                nextSliceStart = (int)currentSlice.NextEventNumber;
+
+                foreach (var evt in currentSlice.Events)
+                {
+                    var res = evt.Event.ParseJson<SaleAchieved>();
+                    list.Add(res);
+                }
+            } while (!currentSlice.IsEndOfStream);
+ 
             return list;
+            
 
         }
 
@@ -62,6 +79,7 @@ namespace Eventstore
             return result;
         }
 
+        // get the total of amount of sales (price * quantite) 
         public decimal TotalSales()
         {
             decimal total = 0; 
