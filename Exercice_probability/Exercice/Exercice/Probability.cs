@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Exercice
 {
@@ -22,14 +18,6 @@ namespace Exercice
             return new Probability(v);
         }
 
-
-
-       public static bool Compare(Probability p,decimal d)
-        {
-            if (p._value == d) return true;
-
-            return false;
-        }
 
         public Probability And(Probability p)
         {
@@ -63,5 +51,12 @@ namespace Exercice
             if (this._value == p._value) return true;
             return false;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
+
+    
 }
