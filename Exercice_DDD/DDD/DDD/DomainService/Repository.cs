@@ -9,7 +9,7 @@ using EventStore.ClientAPI;
 
 namespace DDD.DomainService
 {
-    public class Repository<T> : IRepository<T> where T : AggregateRoot , new()
+    public class Repository<T> : IRepository<T> where T : AggregateRoot 
     {
         private IEventStoreConnection _conn;
         private string _address;
