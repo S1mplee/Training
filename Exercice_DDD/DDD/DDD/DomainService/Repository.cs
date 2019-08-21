@@ -12,6 +12,7 @@ namespace DDD.DomainService
     public class Repository<T> : IRepository<T> where T : AggregateRoot 
     {
         private IEventStoreConnection _conn;
+        private BusMessage _bus;
         private string _address;
         private int _port;
 
@@ -21,6 +22,7 @@ namespace DDD.DomainService
             _port = 1113;
             _conn = EventStoreConnection.Create(new IPEndPoint(IPAddress.Parse(_address), _port));
             _conn.ConnectAsync().Wait();
+            _bus = new BusMessage();
         }
         public AggregateRoot GetbyID(string id)
         {
@@ -105,6 +107,7 @@ namespace DDD.DomainService
             foreach(var evt in agg.events)
             {
                 _conn.AppendToStreamAsync("AccountBalance", ExpectedVersion.Any, evt.AsJson()).Wait();
+                _bus.Publish(evt);
             }
         }
     }
