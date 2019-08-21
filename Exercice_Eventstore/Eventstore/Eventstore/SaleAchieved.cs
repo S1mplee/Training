@@ -4,17 +4,18 @@ namespace Eventstore
 {
     public class SaleAchieved : Event
     {
-        public Guid Id { get; set; }
+        public Guid ProductId;
         public string ProductName { get; set; }
         public int Qts { get; set; }
         public decimal Price { get; set; }
 
-        public SaleAchieved(Guid id, string name, int q, decimal p)
+        public SaleAchieved(Guid id,Guid productId, string name, int qts, decimal price)
         {
             this.Id = id;
+            this.ProductId = productId;
             this.ProductName = name;
-            this.Qts = q;
-            this.Price = p;
+            this.Qts = qts;
+            this.Price = price;
         }
 
         public override string ToString()

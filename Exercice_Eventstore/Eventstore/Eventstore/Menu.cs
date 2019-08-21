@@ -19,10 +19,17 @@ namespace Eventstore
                 Console.WriteLine("1) Add new Sale ");
                 Console.WriteLine("2) Show list of products and quantities  ");
                 Console.WriteLine("3) Show the total amount of sale ");
+                Console.WriteLine("Press q to Quit : ");
+
+                _service.Connect();
+                _service.SubscribeValueChange("salesStream");
+                
                 choice = Console.ReadLine();
+                if (choice == "q") break;
                 switch(choice)
                 {
-                    case "1": AddSale();
+                    case "1":
+                        AddSale();
                         break;
                     case "2": 
                         ShowList();
@@ -61,7 +68,7 @@ namespace Eventstore
 
         private void ShowTotal()
         {
-            var total = _service.TotalSales();
+            var total = _service.getTotal();
             Console.WriteLine("Total Amount of Sales : " + total);
             Console.Read();
             show();
