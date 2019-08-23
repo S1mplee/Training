@@ -2,7 +2,8 @@
 
 namespace DDD
 {
-    public class ReadModel
+    public class ReadModel : IEventHandler<AccountCreated> , IEventHandler<AccountBlocked> , IEventHandler<AccountUnBlocked>,
+        IEventHandler<CashDeposed> , IEventHandler<CashTransfered> , IEventHandler<CashWithdrawn> , IEventHandler<ChequeDeposed> 
     {
 
         public Account account;

@@ -5,14 +5,14 @@ public class Command : Message
 
 }
 
-public class AccountCreate : Command
+public class CreateAccount : Command
 {
     public readonly Guid Id;
     public readonly string _holderName;
     public readonly decimal _overdraftLimit;
     public readonly decimal _wireTransertLimit;
     public readonly decimal _cash;
-    public AccountCreate(Guid id, string name, decimal d, decimal d2,decimal d3)
+    public CreateAccount(Guid id, string name, decimal d, decimal d2,decimal d3)
     {
         this.Id = id;
         this._holderName = name;
@@ -22,49 +22,49 @@ public class AccountCreate : Command
     }
 }
 
-public class ChequeDepose : Command
+public class DeposeCheque : Command
 {
     public readonly Guid accountId;
     public readonly decimal Amount;
 
-    public ChequeDepose(Guid id,decimal amount)
+    public DeposeCheque(Guid id,decimal amount)
     {
         this.accountId = id;
         this.Amount = amount;
     }
 }
 
-public class CashDepose : Command
+public class DeposeCash : Command
 {
     public readonly Guid accountId;
     public readonly decimal Amount;
 
-    public CashDepose(Guid id, decimal amount)
+    public DeposeCash(Guid id, decimal amount)
     {
         this.accountId = id;
         this.Amount = amount;
     }
 }
 
-public class CashWithdraw : Command
+public class WithDrawCash : Command
 {
     public readonly Guid accountId;
     public readonly decimal Amount;
 
-    public CashWithdraw(Guid id,decimal amount)
+    public WithDrawCash(Guid id,decimal amount)
     {
         this.accountId = id;
         this.Amount = amount;
     }
 }
 
-public class CashTransfer : Command
+public class TransferCash : Command
 {
     public readonly Guid accountId;
     public readonly Guid receiverId;
     public readonly decimal Amount;
 
-    public CashTransfer(Guid id,Guid id2,decimal d)
+    public TransferCash(Guid id,Guid id2,decimal d)
     {
         this.accountId = id;
         this.receiverId = id2;

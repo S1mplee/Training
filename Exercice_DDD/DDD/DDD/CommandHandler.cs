@@ -7,7 +7,8 @@ using DDD.DomainService;
 using DDD.DomainModel;
 namespace DDD
 {
-    public class CommandHandler
+    public class CommandHandler : ICommandHandler<CreateAccount> , ICommandHandler<DeposeCheque> ,
+        ICommandHandler<DeposeCash> , ICommandHandler<WithDrawCash> , ICommandHandler<TransferCash>
     {
         private readonly IRepository<AccountBalance> _repo;
         public CommandHandler()
@@ -15,7 +16,7 @@ namespace DDD
             this._repo = new Repository<AccountBalance>();
         }
 
-        public void Handle(AccountCreate cmd)
+        public void Handle(CreateAccount cmd)
         {
             var acc = new AccountBalance();
             acc.Create(cmd.Id, cmd._holderName, cmd._overdraftLimit, cmd._wireTransertLimit, cmd._cash);
@@ -23,7 +24,7 @@ namespace DDD
 
         }
 
-        public void Handle(ChequeDepose cmd)
+        public void Handle(DeposeCheque cmd)
         {
             AccountBalance acc = (AccountBalance) _repo.GetbyID(cmd.accountId.ToString());
             if (acc == null) throw new InvalidOperationException("Does not Exist");
@@ -31,7 +32,7 @@ namespace DDD
             _repo.SaveEvents(acc);
         }
 
-        public void Handle(CashDepose cmd)
+        public void Handle(DeposeCash cmd)
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.accountId.ToString());
             if (acc == null) throw new InvalidOperationException("Does not Exist");
@@ -39,7 +40,7 @@ namespace DDD
             _repo.SaveEvents(acc);
         }
 
-        public void Handle(CashWithdraw cmd)
+        public void Handle(WithDrawCash cmd)
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.accountId.ToString());
             if (acc == null) throw new InvalidOperationException("Does not Exist");
@@ -47,12 +48,19 @@ namespace DDD
             _repo.SaveEvents(acc);
         }
 
-        public void Handle(CashTransfer cmd)
+        public void Handle(TransferCash cmd)
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.accountId.ToString());
             if (acc == null) throw new InvalidOperationException("Does not Exist");
             acc.WireTransfer(cmd.receiverId, cmd.Amount);
             _repo.SaveEvents(acc);
         }
+
+        
+    }
+
+    public interface ICommandHandler<T> where T : Command
+    {
+         void Handle(T cmd);
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit.ScenarioReporting;
-
 namespace Tests
 {
     public class ScenarioRunner1 : ReflectionBasedScenarioRunner<object, object, object>

@@ -55,7 +55,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\AccountBlocked.cs" />
+    <Compile Include="Events\AccountCreated.cs" />
+    <Compile Include="Events\AccountUnBlocked.cs" />
     <Compile Include="BusMessage.cs" />
+    <Compile Include="Events\CashDeposed.cs" />
+    <Compile Include="Events\CashTransfered.cs" />
+    <Compile Include="Events\CashWithdrawn.cs" />
+    <Compile Include="Events\ChequeDeposed.cs" />
     <Compile Include="CommandHandler.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="DomainModel\AccountBalance.cs" />
@@ -64,6 +71,7 @@
     <Compile Include="DomainService\Repository.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="IEventHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel.cs" />
