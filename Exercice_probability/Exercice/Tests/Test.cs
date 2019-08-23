@@ -6,17 +6,6 @@ namespace Tests
 {
     public class Test
     {
-        [Theory]
-        [InlineData(0.2)]
-        [InlineData(1)]
-        [InlineData(0.75)]
-        [InlineData(0.9)]
-        public void Create_ValidinputShouldWork(decimal value)
-        {
-            var expected = Probability.Create(value);
-            var result = Probability.Create(value);
-            Assert.Equal(expected, result);
-        }
 
         [Theory]
         [InlineData(1.5)]
