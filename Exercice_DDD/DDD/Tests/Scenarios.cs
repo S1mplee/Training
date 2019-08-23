@@ -26,7 +26,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (AccountCreate)when;
+            var cmd = (CreateAccount)when;
             value.Create(cmd.Id, cmd._holderName, cmd._overdraftLimit, cmd._wireTransertLimit, cmd._cash);
             evt = (AccountCreated)value.events[0];
             return Task.CompletedTask;
@@ -57,7 +57,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (ChequeDepose)when;
+            var cmd = (DeposeCheque)when;
             value.Create(cmd.accountId, "Mohamed", 500, 200, 1000);
             value.DeposeCheque(cmd.Amount);
             evt = (ChequeDeposed)value.events[1];
@@ -89,7 +89,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (ChequeDepose)when;
+            var cmd = (DeposeCheque)when;
             value.Create(cmd.accountId, "Mohamed", 500, 200, -1000);
             value.DeposeCheque(cmd.Amount);
             evt = (AccountUnBlocked)value.events[2];
@@ -121,7 +121,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (CashWithdraw)when;
+            var cmd = (WithDrawCash)when;
             value.Create(cmd.accountId, "Mohamed", 500, 200, 1000);
             value.WithdrawCash(cmd.Amount);
             evt = (CashWithdrawn)value.events[1];
@@ -153,7 +153,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (CashTransfer)when;
+            var cmd = (TransferCash)when;
             value.Create(cmd.accountId, "Mohamed", 500, 200, 1000);
             value.WireTransfer(cmd.accountId, cmd.Amount);
             evt = (CashTransfered)value.events[1];
@@ -191,7 +191,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (CashWithdraw)when;
+            var cmd = (WithDrawCash)when;
             value.Create(cmd.accountId, "Mohamed", 500, 200, 1000);
             value.WireTransfer(cmd.accountId, cmd.Amount);
             evt = (AccountBlocked)value.events[2];
@@ -225,7 +225,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (CashTransfer)when;
+            var cmd = (TransferCash)when;
             value.Create(cmd.accountId, "Mohamed", 500, 200, 1000);
             value.WireTransfer(cmd.receiverId, cmd.Amount);
             evt = (CashTransfered)value.events[1];
@@ -259,7 +259,7 @@ namespace Tests
 
         protected override Task When(object when)
         {
-            var cmd = (CashTransfer)when;
+            var cmd = (TransferCash)when;
             value.Create(cmd.accountId, "Mohamed", 500, 200, 1000);
             value.WireTransfer(cmd.receiverId, cmd.Amount);
             evt = (CashTransfered)value.events[1];
