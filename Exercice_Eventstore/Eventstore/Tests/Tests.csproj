@@ -73,9 +73,17 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Director\InventoryManager.csproj">
+      <Project>{e15d13ba-43ed-489b-9d87-d1faa9d05400}</Project>
+      <Name>InventoryManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Eventstore\Eventstore.csproj">
       <Project>{c313c4b3-19df-41ba-8885-c88d704bb64c}</Project>
       <Name>Eventstore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\inventory_manager\Director.csproj">
+      <Project>{d8494b7f-6bea-4963-89ba-550ddf75604a}</Project>
+      <Name>Director</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

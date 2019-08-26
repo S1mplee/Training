@@ -11,10 +11,29 @@ namespace Eventstore
     public class SaleService
     {
         private EventStoree repo;
-      
+
+        public List<Product> list = new List<Product>();
+
+        public  void ChargeProducts()
+        {
+            list.Add(new Product { id = Guid.Parse("de6da6d0-17b6-491a-904b-c0781916781e"), ProductName = "CPU", price = 150 });
+            list.Add(new Product { id = Guid.Parse("de4da6d0-17b6-491a-904b-c0781916781e"), ProductName = "GPU", price = 100 });
+            list.Add(new Product { id = Guid.Parse("de8da6d0-17b6-491a-904b-c0781916781e"), ProductName = "Mouse", price = 50 });
+            list.Add(new Product { id = Guid.Parse("de9da6d0-17b6-491a-904b-c0781916781e"), ProductName = "KeyBoard", price = 60 });
+
+        }
+
+        public void show()
+        {
+            int i = 0;
+            foreach(var elem in list )
+            {
+                i++;
+                Console.WriteLine(i+") Name : {0} Price : {1}",elem.ProductName,elem.price);
+            }
+        }
 
 
-        
 
 
 
@@ -45,12 +64,12 @@ namespace Eventstore
                 */
 
         // Write an event to eventstore ()
-        public bool WriteEvent(string name, int qts, decimal price)
+        public bool WriteEvent(Guid Pid,string name, int qts, decimal price)
         {
 
             if (string.IsNullOrEmpty(name) || qts <= 0 || price <= 0) throw new InvalidOperationException("Invalid Operation!");
 
-            var Event = new SaleAchieved(Guid.NewGuid(), Guid.NewGuid(), name, qts, price);
+            var Event = new SaleAchieved(Guid.NewGuid(), Pid, name, qts, price);
             repo.Connection().AppendToStreamAsync("salesStream", ExpectedVersion.Any, Event.AsJson()).Wait();
             return true;
 

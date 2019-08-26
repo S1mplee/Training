@@ -58,10 +58,6 @@
       <Project>{c313c4b3-19df-41ba-8885-c88d704bb64c}</Project>
       <Name>Eventstore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tests\Tests.csproj">
-      <Project>{72cf02e0-b459-4d31-9aac-3d97f273c97d}</Project>
-      <Name>Tests</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

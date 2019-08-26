@@ -17,7 +17,7 @@ namespace inventory_manager
             Console.WriteLine("Director :");
             var store = new EventStoree();
             store.Connect();
-            var Service = new service(store);
+            var Service = new DirectorService(store);
             Service.SubscribeValueChange(store);
             Console.WriteLine("Amount of Sales : " + Service.sum);
             Console.WriteLine("Listening to new Events :");
@@ -26,10 +26,10 @@ namespace inventory_manager
         
     }
 
-    public class service
+    public class DirectorService
     {
         public decimal sum;
-        public service(EventStoree store)
+        public DirectorService(EventStoree store)
         {
             var list = GetEvents(store);
              sum = TotalSales(list);
@@ -75,7 +75,7 @@ namespace inventory_manager
 
             return list;
         }
-        private static decimal TotalSales(IList<SaleAchieved> list)
+        public  decimal TotalSales(IList<SaleAchieved> list)
         {
             decimal total = 0;
             foreach (var elem in list)

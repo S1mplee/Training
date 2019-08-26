@@ -1,6 +1,5 @@
-﻿using EventStore.ClientAPI;
-using EventStore.ClientAPI.Common.Log;
-using EventStore.ClientAPI.Projections;
+﻿using Eventstore;
+using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 using Newtonsoft.Json;
 using System;
@@ -13,56 +12,98 @@ using System.Threading.Tasks;
 
 namespace Director
 {
+    public class products
+    {
+        public List<Result> Body = new List<Result>();
+    }
+    public class Result
+    {
+        public string ProductName { get; set; }
+        public int Qts { get; set; }
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            GetProducts();
-            Console.ReadLine();
+            var store = new EventStoree();
+            store.Connect();
+            var Service = new Inventoryservice(store);
+            Service.SubscribeValueChange(store);
+            Service.Read(store);
+
+            Console.WriteLine("Listening to new Events :");
+            Console.Read();
         }
-        public static async void GetProducts()
+       
+
+
+
+        }
+
+    public class Inventoryservice
+    {
+        public products products = new products();
+        public Inventoryservice(EventStoree store)
         {
-            var conn = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
-            conn.ConnectAsync().Wait();
+        }
+        public void SubscribeValueChange(EventStoree store)
+        {
+            store.Connection().SubscribeToStream("result", false, ValueChanged, Dropped, new UserCredentials("admin", "changeit"));
+        }
 
-            ProjectionsManager projectionsManager = new ProjectionsManager(new ConsoleLogger(), new IPEndPoint(IPAddress.Parse("127.0.0.1"), 2113), TimeSpan.FromMilliseconds(5000));
+        private void ValueChanged(EventStoreSubscription eventStoreSubscription, ResolvedEvent resolvedEvent)
+        {
+            /*
+            var evt = resolvedEvent.Event.ParseJson<SaleAchieved>();
+            sum = sum + (evt.Qts * evt.Price);
+            Console.Clear();
+            */
+            Console.WriteLine("New Value : ");
+            var evt = resolvedEvent.Event.ParseJson<products>();
+            Console.WriteLine("***************************************************");
+            products.Body.Add(evt.Body[evt.Body.Count - 1]);
+            Console.WriteLine(evt.Body[evt.Body.Count - 1].ProductName + " " + evt.Body[evt.Body.Count - 1].Qts);
+            Show();
 
+        }
 
-            while (true)
+        private void Dropped(EventStoreSubscription subscription, SubscriptionDropReason subscriptionDropReason, Exception exception)
+        {
+        }
+
+        public void Read(EventStoree store)
+        {
+            var result = store.Connection().ReadStreamEventsForwardAsync("salesStream", 0,
+                                                              100, false)
+                                                              .Result;
+            foreach (var evt in result.Events)
             {
-                var readEvents = conn.ReadStreamEventsForwardAsync("Test", 0, 10, true)
-          .Result;
-                var projectionState = await projectionsManager.GetStateAsync("Test", new UserCredentials("admin", "changeit"));
-                dynamic salesNumber = JsonConvert.DeserializeObject(projectionState);
-                Newtonsoft.Json.Linq.JArray tab = salesNumber.Body;
+                var sale = evt.Event.ParseJson<SaleAchieved>();
+                var Res = new Result { ProductName = sale.ProductName, Qts = sale.Qts };
+                products.Body.Add(Res);
+            }
+            Show();
+        }
 
-                var result = from p in tab
-                             select new { name = (string)p["ProductName"], value = int.Parse((string)p["Qts"]) };
+        private void Show()
+        {
+            Console.WriteLine("***************************************************");
+            var result = from p in products.Body
+                         group p by p.ProductName into g
+                         select new
+                         {
+                             Name = g.Key,
+                             Qts = g.Sum(x => x.Qts),
+                         };
 
-                var result2 = from p in result
-                              group p by p.name into g
-                              select new Result
-                              {
-                                  name = g.Key,
-                                  qts = g.Sum(x => x.value),
-                              };
-
-                foreach (var elem in result2)
-                {
-                    Console.Write(elem.name + " ");
-                    Console.Write(elem.qts);
-                    Console.WriteLine();
-                }
-                Thread.Sleep(2000);
-                Console.Clear();
+            foreach (var elem in result)
+            {
+                Console.WriteLine(elem.Name + " " + elem.Qts);
             }
         }
 
-        public class Result
-        {
-            public string name;
-            public int qts;
-        }
+
+
     }
 }
 
