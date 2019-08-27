@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -46,7 +47,13 @@ namespace Test
         [Fact]
         public void can_Withdraw_Block_Account()
         {
-
+            var g = Guid.NewGuid();
+            var cmd = new CreateAccount(g, "bilel", 1000, 200, 200);
+            this.Command.Handle(cmd);
+            var cmd2 = new WithDrawCash(g, 2000);
+            Assert.Throws<ArgumentException>(() => this.Command.Handle(cmd2));
+            Thread.Sleep(2000);
+            Assert.True(this._readModel.list.Find(x => x.Id == g).blocked);
         }
     }
 }

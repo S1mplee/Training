@@ -198,6 +198,7 @@
     <Compile Include="TestDeposeCheque.cs" />
     <Compile Include="TestService.cs" />
     <Compile Include="WireTransferTest.cs" />
+    <Compile Include="WireTransfertLimit.cs" />
     <Compile Include="WithDrawCashTest.cs" />
   </ItemGroup>
   <ItemGroup>
