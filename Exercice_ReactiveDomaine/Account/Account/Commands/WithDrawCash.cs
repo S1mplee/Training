@@ -8,7 +8,7 @@ namespace Account
         public Guid id;
         public decimal amount;
 
-        public WithDrawCash(Guid id, decimal amount) 
+        public WithDrawCash(Guid id, decimal amount)
         {
             this.id = id;
             this.amount = amount;

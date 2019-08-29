@@ -7,7 +7,7 @@ namespace Account
     {
         public readonly Guid Id;
         public decimal amount;
-        public DeposeCheque(Guid id, decimal amount) 
+        public DeposeCheque(Guid id, decimal amount)
         {
             this.Id = id;
             this.amount = amount;
