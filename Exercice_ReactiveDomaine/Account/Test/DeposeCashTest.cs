@@ -19,7 +19,7 @@ namespace Test
         public void Can_Deposit_Cash()
         {
             var g = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "bilel", 1000, 200, 200);
+            var cmd = new CreateAccount(g, "bilel");
             this.Command.Handle(cmd);
             var cmd2 = new DeposeCash(g, 100);
             Assert.IsType<Success>(this.Command.Handle(cmd2));
@@ -33,7 +33,7 @@ namespace Test
         public void can_not_deposit_cash_with_negative_amount(decimal amount)
         {
             var g = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "bilel", 1000, 200, 200);
+            var cmd = new CreateAccount(g, "bilel");
             this.Command.Handle(cmd);
             var cmd2 = new DeposeCash(g, amount);
             Assert.Throws<ArgumentException>(() => this.Command.Handle(cmd2));
@@ -50,7 +50,7 @@ namespace Test
         public void can_unblock_Account()
         {
             var g = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "bilel", 1000, 200, 200);
+            var cmd = new CreateAccount(g, "bilel");
             this.Command.Handle(cmd);
             var cmd2 = new WithDrawCash(g, 2000);
             this.Command.Handle(cmd2);

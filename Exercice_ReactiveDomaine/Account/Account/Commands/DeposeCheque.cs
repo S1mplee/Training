@@ -7,10 +7,12 @@ namespace Account
     {
         public readonly Guid Id;
         public decimal amount;
-        public DeposeCheque(Guid id, decimal amount)
+        public DateTime Date;
+        public DeposeCheque(Guid id, decimal amount,DateTime Date)
         {
             this.Id = id;
             this.amount = amount;
+            this.Date = Date;
         }
     }
 }

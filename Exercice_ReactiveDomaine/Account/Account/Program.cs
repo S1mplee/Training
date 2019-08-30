@@ -1,4 +1,5 @@
-﻿using EventStore.ClientAPI;
+﻿using Account.Commands;
+using EventStore.ClientAPI;
 using ReactiveDomain;
 using ReactiveDomain.EventStore;
 using ReactiveDomain.Foundation;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Account
@@ -39,10 +41,15 @@ namespace Account
                 _readModel = new AccountBalanceReadModel(() => listener);
                 var Command = new AccountCommandHandler(repo);
                 //   var cmd = new TransferCash(Guid.Parse("9970dc8c-b22a-4f93-87be-fd2e798beea2"),Guid.Parse("bb554f9a-7a38-4c74-84c3-b50abe5bb1d4"),1000);
-                // var cmd = new CreateAccount(Guid.NewGuid(), "Fathi", 1000, 200, 200);
-               //   Console.WriteLine(Command.Handle(cmd));
-               // _readModel.show();
-                 _readModel.show();
+                var g = Guid.NewGuid();
+            //    var cmd = new CreateAccount(g, "Ahmed");
+             //  var cmd2 = new SetDailyTransfertLimit(g, 1000);
+             //   Console.WriteLine(Command.Handle(cmd));
+             //   Thread.Sleep(1000);
+             //   Console.WriteLine(Command.Handle(cmd2));
+            //    Thread.Sleep(1000);
+               _readModel.show();
+                // _readModel.show();
                 Console.Read();
                 /*
                 var acc = repo.GetById<AccountBalance>(Guid.Parse("96e90f4c-04e9-4ec3-b7f3-8627bd62b6fc"));

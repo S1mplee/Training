@@ -22,8 +22,8 @@ namespace Test
         {
             var g = Guid.NewGuid();
             var g2 = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "MMMMMMMMMMMMMMM", 1000, 200, 200);
-            var cmd2 = new CreateAccount(g2, "GGGGGGGGGG", 1000, 200, 200);
+            var cmd = new CreateAccount(g, "MMMMMMMMMMMMMMM");
+            var cmd2 = new CreateAccount(g2, "GGGGGGGGGG");
             this.Command.Handle(cmd);
             this.Command.Handle(cmd2);
             var cmd3 = new TransferCash(g, g2, 100);
@@ -45,8 +45,8 @@ namespace Test
         {
             var g = Guid.NewGuid();
             var g2 = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "MMMMMMMMMMMMMMM", 1000, 200, 200);
-            var cmd2 = new CreateAccount(g2, "GGGGGGGGGG", 1000, 200, 200);
+            var cmd = new CreateAccount(g, "MMMMMMMMMMMMMMM");
+            var cmd2 = new CreateAccount(g2, "GGGGGGGGGG");
             this.Command.Handle(cmd);
             this.Command.Handle(cmd2);
             var cmd3 = new TransferCash(g, g2, 1000);

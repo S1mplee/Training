@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Test
 {
+    /*
     public class TestDeposeCheque : TestService
     {
         public TestDeposeCheque() : base()
@@ -61,4 +62,5 @@ namespace Test
 
         }
     }
+    */
 }

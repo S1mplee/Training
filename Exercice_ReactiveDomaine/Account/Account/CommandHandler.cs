@@ -1,4 +1,5 @@
-﻿using ReactiveDomain.Foundation;
+﻿using Account.Commands;
+using ReactiveDomain.Foundation;
 using ReactiveDomain.Messaging;
 using ReactiveDomain.Messaging.Bus;
 using System;
@@ -29,10 +30,38 @@ namespace Account
                 {
                     throw new InvalidOperationException("Alreay exist !");
                 }
-                acc = new AccountBalance(command.Id, command.Holdername, command.cash, command.overdraft, command.wiretranferlimit);
+                acc = new AccountBalance(command.Id, command.Holdername);
                 _repo.Save(acc);
                    
            
+            return command.Succeed();
+        }
+
+        public CommandResponse Handle(SetDailyTransfertLimit command)
+        {
+
+            if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc))
+            {
+                throw new InvalidOperationException("Does Not exist !");
+            }
+            acc.SetWireTransfertLimit(command.amount);
+            _repo.Save(acc);
+
+
+            return command.Succeed();
+        }
+
+        public CommandResponse Handle(SetOverdraftLimit command)
+        {
+
+            if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc))
+            {
+                throw new InvalidOperationException("Does Not exist !");
+            }
+            acc.SetOverDraftLimit(command.amount);
+            _repo.Save(acc);
+
+
             return command.Succeed();
         }
 
@@ -72,7 +101,7 @@ namespace Account
             {
                 throw new InvalidOperationException("Does Not Exist !");
             }
-            acc.WireTransfer(command.reciverId,command.amount);
+            acc.WireTransfer(command.amount);
             _repo.Save(acc);
             return command.Succeed();
         }
@@ -83,7 +112,7 @@ namespace Account
             {
                 throw new InvalidOperationException("Does Not Exist !");
             }
-            acc.DeposeCheque(command.amount);
+            acc.DeposeCheque(command.amount,command.Date);
             _repo.Save(acc);
             return command.Succeed();
         }

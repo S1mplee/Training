@@ -1,14 +1,15 @@
 ﻿using ReactiveDomain.Messaging;
 using System;
 
-namespace TestAccountBalance
+namespace Account.Commands
 {
-    public class CashTransfered : Message
+
+    public class SetOverdraftLimit : Command
     {
         public Guid id;
         public decimal amount;
 
-        public CashTransfered(Guid id, decimal amount)
+        public SetOverdraftLimit(Guid id, decimal amount)
         {
             this.id = id;
             this.amount = amount;

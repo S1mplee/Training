@@ -20,7 +20,7 @@ namespace Test
         [Fact]
         public void can_Create_Account()
         {
-            var cmd = new CreateAccount(Guid.NewGuid(), "Injez", 1000, 500, 200);
+            var cmd = new CreateAccount(Guid.NewGuid(), "Injez");
             Assert.IsType<Success>(this.Command.Handle(cmd));
         }
 
@@ -28,8 +28,8 @@ namespace Test
         public void can_not_Create_Account_WithSame_ID()
         {
             var g = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "Mohamed", 1000, 200, 300);
-            var cmd2 = new CreateAccount(g, "Mohamed", 1000, 200, 300);
+            var cmd = new CreateAccount(g, "Mohamed");
+            var cmd2 = new CreateAccount(g, "Mohamed");
             this.Command.Handle(cmd);
             Assert.Throws<InvalidOperationException>(() => this.Command.Handle(cmd2));
         }
@@ -37,7 +37,7 @@ namespace Test
         [Fact]
         public void can_not_Create_Account_WithInvalidInputs()
         {
-            var cmd = new CreateAccount(Guid.NewGuid(), "", -1000, 200, 300);
+            var cmd = new CreateAccount(Guid.NewGuid(), "");
             Assert.Throws<ArgumentException>(() => this.Command.Handle(cmd));
         }
     }

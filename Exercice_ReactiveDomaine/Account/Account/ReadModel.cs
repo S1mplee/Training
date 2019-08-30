@@ -17,7 +17,9 @@ namespace Account
         IHandle<AccountBlocked>,
         IHandle<CashDeposed>,
         IHandle<CashWithdrawn>,
-        IHandle<CashTransfered>
+        IHandle<CashTransfered>,
+        IHandle<OverDraftlimitSet>,
+        IHandle<DailyWireTransfertLimitSet>
     {
         public List<account> list = new List<account>();
         public AccountBalanceReadModel(Func<IListener> listener) : base("", listener)
@@ -29,6 +31,8 @@ namespace Account
             EventStream.Subscribe<CashDeposed>(this);
             EventStream.Subscribe<CashWithdrawn>(this);
             EventStream.Subscribe<CashTransfered>(this);
+            EventStream.Subscribe<OverDraftlimitSet>(this);
+            EventStream.Subscribe<DailyWireTransfertLimitSet>(this);
             Start<AccountBalance>(null, true);
         }
 
@@ -38,16 +42,14 @@ namespace Account
             {
                 Id = message.Id,
                 HolderName = message.Holdername,
-                cash = message.cash,
-                overdraftlimit = message.overdraft,
-                wiretransfertlimit = message.wiretranferlimit,
                 blocked = false
             });
         }
 
         public void Handle(ChequeDeposed message)
         {
-            list.Find(x => x.Id == message.Id).cash += message.amount;
+            if (CheckDate(message.Date))
+                list.Find(x => x.Id == message.Id).cash += message.amount;
 
         }
 
@@ -77,15 +79,32 @@ namespace Account
         public void Handle(CashTransfered message)
         {
             list.Find(x => x.Id == message.id).cash -= message.amount;
-            list.Find(x => x.Id == message.reciverId).cash += message.amount;
+        }
+
+        public void Handle(OverDraftlimitSet message)
+        {
+            list.Find(x => x.Id == message.id).overdraftlimit = message.amount;
+        }
+
+        public void Handle(DailyWireTransfertLimitSet message)
+        {
+            list.Find(x => x.Id == message.id).wiretransfertlimit = message.amount;
         }
 
         public void show()
         {
             foreach (var elem in list)
             {
-                Console.WriteLine(elem.HolderName + " " + elem.cash+" "+elem.blocked);
+                Console.WriteLine(elem.HolderName + " " + elem.cash+" "+elem.blocked+" "+elem.overdraftlimit+" "+elem.wiretransfertlimit);
             }
+        }
+
+        private bool CheckDate(DateTime date)
+        {
+            if (date.DayOfWeek >= DayOfWeek.Monday && date.DayOfWeek <= DayOfWeek.Friday
+            && date.TimeOfDay >= TimeSpan.Parse("09:00:00")
+            && date.TimeOfDay <= TimeSpan.Parse("17:00:00")) return true;
+            return false;
         }
     }
 
