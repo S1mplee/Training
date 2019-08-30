@@ -100,7 +100,7 @@ namespace DDD.DomainModel
 
 
 
-        public void WireTransfer(decimal amount)
+        public void WireTransfer(decimal amount,DateTime date)
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
          
@@ -111,7 +111,7 @@ namespace DDD.DomainModel
                 this.events.Add(evt2);
             } else
             {
-                var evt = new CashTransfered(this.Id, amount);
+                var evt = new CashTransfered(this.Id, amount,date);
                 SetState(evt);
                 this.events.Add(evt);
             }
@@ -129,8 +129,15 @@ namespace DDD.DomainModel
 
         public void SetState(CashTransfered evt)
         {
+            if ((DateTime.Now - evt.LastTransfer).Hours > 24)
+            {
+                this._DailywireTransfertAchieved = 0;
+            }
+
             this._balance -= evt.Amount;
             this._DailywireTransfertAchieved += evt.Amount;
+
+           
         }
 
         public void SetState(AccountCreated evt)
