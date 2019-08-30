@@ -32,7 +32,7 @@ namespace DDD
         {
             AccountBalance acc = (AccountBalance) _repo.GetbyID(cmd.AccountId);
             if (acc == null) throw new InvalidOperationException("Does not Exist");
-            acc.DeposeCheque(new Cheque(cmd.Amount,cmd.Date));
+            acc.DeposeCheque(cmd.Amount,cmd.DepositDate);
             _repo.SaveEvents(acc);
         }
 
@@ -69,7 +69,7 @@ namespace DDD
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.AccountId);
             if (acc == null) throw new InvalidOperationException("Does not Exist");
-            acc.SetOverDraftLimit(cmd.AccountId,cmd.Amount);
+            acc.SetOverDraftLimit(cmd.Amount);
             _repo.SaveEvents(acc);
         }
 
@@ -77,7 +77,7 @@ namespace DDD
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.AccountId);
             if (acc == null) throw new InvalidOperationException("Does not Exist");
-            acc.SetWireTransfertLimit(cmd.AccountId, cmd.Amount);
+            acc.SetWireTransfertLimit(cmd.Amount);
             _repo.SaveEvents(acc);
         }
 

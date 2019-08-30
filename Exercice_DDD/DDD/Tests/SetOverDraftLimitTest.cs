@@ -17,7 +17,7 @@ namespace Tests
             var g = Guid.NewGuid();
             acc.Create(g, "Mohamed");
            
-            Assert.Throws<ArgumentException>(() => acc.SetOverDraftLimit(g, -200));
+            Assert.Throws<ArgumentException>(() => acc.SetOverDraftLimit( -200));
         }
 
         [Fact]

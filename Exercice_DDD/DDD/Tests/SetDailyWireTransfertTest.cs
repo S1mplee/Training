@@ -17,7 +17,7 @@ namespace Tests
             var g = Guid.NewGuid();
             acc.Create(g, "Mohamed");
 
-            Assert.Throws<ArgumentException>(() => acc.SetWireTransfertLimit(g, -200));
+            Assert.Throws<ArgumentException>(() => acc.SetWireTransfertLimit( -200));
         }
 
         [Fact]

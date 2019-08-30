@@ -55,7 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cheque.cs" />
     <Compile Include="Command\CreateAccount.cs" />
     <Compile Include="Command\DeposeCash.cs" />
     <Compile Include="Command\DeposeCheque.cs" />

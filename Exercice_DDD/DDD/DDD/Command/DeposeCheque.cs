@@ -5,12 +5,12 @@ public class DeposeCheque : Command
 {
     public readonly Guid AccountId;
     public readonly decimal Amount;
-    public readonly DateTime Date;
+    public readonly DateTime DepositDate;
     public DeposeCheque(Guid id,decimal amount,DateTime date)
     {
         this.AccountId = id;
         this.Amount = amount;
-        this.Date = date;
+        this.DepositDate = date;
     }
 }
 

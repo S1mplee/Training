@@ -12,7 +12,6 @@ namespace DDD.DomainModel
         private decimal _wireTransertLimit;
         private decimal _DailywireTransfertAchieved;
         private bool _blocked;
-        private List<Cheque> _cheques = new List<Cheque>();
 
         public AccountBalance() : base()
         {
@@ -28,29 +27,31 @@ namespace DDD.DomainModel
 
         }
 
-        public void SetOverDraftLimit(Guid id,decimal amount)
+        public void SetOverDraftLimit(decimal amount)
         {
-            if (id == null || amount < 0) throw new ArgumentException("Invalid Inputs");
-            var evt = new OverDraftlimitSet(id, amount);
+            if ( amount < 0) throw new ArgumentException("Invalid Inputs");
+            var evt = new OverDraftlimitSet(this.Id, amount);
             SetState(evt);
             this.events.Add(evt);
         }
 
-        public void SetWireTransfertLimit(Guid id,decimal amount)
+        public void SetWireTransfertLimit(decimal amount)
         {
-            if (id == null || amount < 0) throw new ArgumentException("Invalid Inputs");
-            var evt = new DailyWireTransfertLimitSet(id, amount);
+            if ( amount < 0) throw new ArgumentException("Invalid Inputs");
+            var evt = new DailyWireTransfertLimitSet(this.Id,amount);
             SetState(evt);
             this.events.Add(evt);
         }
 
        
         
-        public void DeposeCheque(Cheque cheque)
+        public void DeposeCheque(decimal amount,DateTime DepositDate)
         {
-            if (cheque.Amount <= 0) throw new ArgumentException("invalid Amount"); 
+            if (amount <= 0) throw new ArgumentException("invalid Amount");
 
-            var evt = new ChequeDeposed(this.Id, cheque.Amount,cheque.Date);
+            var ValidDate = GetValidDate(DepositDate);
+
+            var evt = new ChequeDeposed(this.Id,amount,DepositDate,ValidDate);
                 SetState(evt);
                 this.events.Add(evt);
             
@@ -120,13 +121,10 @@ namespace DDD.DomainModel
         }
         public void SetState(ChequeDeposed evt)
         {
-            var cheque = new Cheque(evt.Amount, evt.Date);
-            if (VerifDate(evt.Date))
+            if (evt.DepositDate == evt.ClearDate)
             {
-                this._balance += cheque.Amount;
-                cheque.Checked = true;
+                this._balance += evt.Amount;
             }
-            this._cheques.Add(cheque);
         }
 
         public void SetState(CashTransfered evt)
@@ -180,6 +178,55 @@ namespace DDD.DomainModel
             return false;
         }
 
+        //Gets The Next Business Day
+        public DateTime GetValidDate(DateTime date)
+        {
+            var date1 = DateTime.Parse(date.Date.ToString());
+            var date_8h = date1.AddHours(8);
+            var date_17h = date1.AddHours(17);
 
+            if (date1.DayOfWeek == DayOfWeek.Sunday)
+            {
+                var d = date1.AddHours(32);
+                return d;
+            }
+            else if (date1.DayOfWeek == DayOfWeek.Saturday)
+            {
+                var d = date1.AddHours(56);
+                return d;
+            }
+            else if (date1.DayOfWeek == DayOfWeek.Friday && date.Hour >= 17)
+            {
+                var d = date1.AddHours(80);
+                return d;
+            }
+
+
+
+            else if (date < date_8h)
+            {
+                var m = DateTime.Parse(date.Date.ToString());
+                var c = m.AddHours(8);
+
+                var businessDay = date + (c - date);
+                return businessDay;
+            }
+
+            else if (date > date_17h)
+            {
+                var k = DateTime.Parse(date.Date.ToString());
+                var mm = k.AddHours(32);
+
+                var businessDay = date + (mm - date);
+                return businessDay;
+            }
+
+
+            return date;
+        }
     }
 }
+
+
+    
+

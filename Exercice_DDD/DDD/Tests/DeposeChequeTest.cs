@@ -21,7 +21,7 @@ namespace Tests
             var acc = new AccountBalance();
             var g = Guid.NewGuid();
             acc.Create(g, "Mohamed");
-            Assert.Throws<ArgumentException>(() => acc.DeposeCheque(new DDD.Cheque(amount,DateTime.Now)));
+            Assert.Throws<ArgumentException>(() => acc.DeposeCheque(amount,DateTime.Now));
         }
         
         [Theory]
@@ -31,13 +31,14 @@ namespace Tests
         public async Task DeposeCheque_AccountUnblocked_WithValidAmount_ShouldGenerateOneEvent(decimal amount)
         {
             var sc = new ScenarioRunner();
+            var acc = new AccountBalance();
 
             var g = Guid.NewGuid();
             var date = DateTime.Now;
             var cmd = new CreateAccount(g, "Ahmed");
             var cmd2 = new DeposeCheque(g,amount,date);
             var evt1 = new AccountCreated(g, "Ahmed");
-            var evt2 = new ChequeDeposed(g, amount, date);
+            var evt2 = new ChequeDeposed(g, amount, date,acc.GetValidDate(date));
 
 
             await sc.Run(def => def.Given()
@@ -49,7 +50,7 @@ namespace Tests
         public async Task DeposeCheque_AccountBlocked_WithValidAmount_ShouldUnBlockAccount()
         {
             var sc = new ScenarioRunner();
-
+            var acc = new AccountBalance();
             var g = Guid.NewGuid();
             var date = DateTime.Now;
             var cmd = new CreateAccount(g, "Ahmed");
@@ -58,7 +59,7 @@ namespace Tests
             var cmd4 = new WithDrawCash(g, 400);
 
             var evt1 = new AccountCreated(g, "Ahmed");
-            var evt2 = new ChequeDeposed(g, 100,date);
+            var evt2 = new ChequeDeposed(g, 100,date,acc.GetValidDate(date));
             var evt3 = new OverDraftlimitSet(g, 100);
             var evt5 = new AccountBlocked(g);  // expected event
 

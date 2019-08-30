@@ -2,19 +2,16 @@
 
 public class ChequeDeposed : Event
 {
-    public  Guid AccountId;
-    public  decimal Amount;
-    public DateTime Date;
-    public ChequeDeposed(Guid id, decimal amount,DateTime date)
+    public readonly Guid AccountId;
+    public readonly decimal Amount;
+    public readonly DateTime DepositDate;
+    public readonly DateTime ClearDate;
+    public ChequeDeposed(Guid id, decimal amount, DateTime date, DateTime clear)
     {
         this.AccountId = id;
         this.Amount = amount;
-        this.Date = date;
-    }
-
-    public override string ToString()
-    {
-        return "" + AccountId + " " + Amount;
+        this.DepositDate = date;
+        this.DepositDate = clear;
     }
 }
 
