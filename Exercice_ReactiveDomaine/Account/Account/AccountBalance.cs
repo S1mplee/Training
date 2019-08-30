@@ -18,6 +18,7 @@ namespace TestAccountBalance
         private decimal _dailyTransfertAmount;
         private bool _blocked;
         private List<Cheque> _list;
+
         public AccountBalance(Guid id,string name) : this()
         {
             if (id == null || string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Inputs !");
@@ -51,7 +52,11 @@ namespace TestAccountBalance
             Register<AccountUnblocked>(evt => _blocked = false);
             Register<AccountBlocked>(evt => this._blocked = true);
             Register<CashWithdrawn>(evt => this._cash -= evt.amount);
-            Register<CashTransfered>(evt => this._cash -= evt.amount);
+            Register<CashTransfered>(evt =>
+            {
+                this._cash -= evt.amount;
+                this._dailyTransfertAmount += evt.amount;
+            });
             Register<OverDraftlimitSet>(evt => this._overdraft = evt.amount);
             Register<DailyWireTransfertLimitSet>(evt => this._wiretranferlimit = evt.amount);
         

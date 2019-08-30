@@ -10,6 +10,7 @@ using Xunit;
 
 namespace Test
 {
+    /*
     public class WithDrawCashTest : TestService
     {
         public WithDrawCashTest(): base()
@@ -56,4 +57,5 @@ namespace Test
             Assert.True(this._readModel.list.Find(x => x.Id == g).blocked);
         }
     }
+    */
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestAccountBalance;
 
 namespace Account
 {
@@ -12,7 +13,9 @@ namespace Account
         public string HolderName { get; set; }
         public decimal cash { get; set; }
         public decimal overdraftlimit { get; set; }
+        public decimal DailyWireTransfetAchieved { get;set }
         public decimal wiretransfertlimit { get; set; }
         public bool blocked { get; set; }
+        public List<Cheque> cheques { get;set }
     }
 }

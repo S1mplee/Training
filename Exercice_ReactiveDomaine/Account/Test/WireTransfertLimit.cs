@@ -10,6 +10,7 @@ using Xunit;
 
 namespace Test
 {
+    /*
     public class WireTransfertLimit : TestService
     {
         public WireTransfertLimit() : base()
@@ -56,4 +57,5 @@ namespace Test
 
         }
     }
+    */
 }

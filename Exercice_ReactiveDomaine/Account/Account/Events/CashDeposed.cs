@@ -1,9 +1,9 @@
-﻿using ReactiveDomain.Messaging;
+﻿using Account;
 using System;
 
 namespace TestAccountBalance
 {
-    public class CashDeposed : Message 
+    public class CashDeposed : Event 
     {
         public Guid id;
         public decimal amount;

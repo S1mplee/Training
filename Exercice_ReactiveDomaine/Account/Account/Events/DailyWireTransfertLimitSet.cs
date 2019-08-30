@@ -1,7 +1,7 @@
-﻿using ReactiveDomain.Messaging;
+﻿using Account;
 using System;
 
-public class DailyWireTransfertLimitSet : Message
+public class DailyWireTransfertLimitSet : Event
 {
     public Guid id;
     public decimal amount;

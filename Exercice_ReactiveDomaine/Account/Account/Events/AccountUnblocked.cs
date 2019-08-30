@@ -1,9 +1,9 @@
-﻿using ReactiveDomain.Messaging;
+﻿using Account;
 using System;
 
 namespace TestAccountBalance
 {
-    public class AccountUnblocked : Message
+    public class AccountUnblocked : Event
     {
         public Guid id;
 

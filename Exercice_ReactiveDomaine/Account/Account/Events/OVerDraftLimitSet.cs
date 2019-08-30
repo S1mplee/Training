@@ -1,8 +1,8 @@
-﻿using ReactiveDomain.Messaging;
+﻿using Account;
 using System;
 
 
-public class OverDraftlimitSet : Message
+public class OverDraftlimitSet : Event
 {
     public Guid id;
     public decimal amount;

@@ -9,6 +9,7 @@ using TestAccountBalance;
 
 namespace Account
 {
+    /*
     public class AccountBalanceReadModel :
         ReadModelBase,
         IHandle<AccountCreated>,
@@ -48,8 +49,12 @@ namespace Account
 
         public void Handle(ChequeDeposed message)
         {
+        var ch = new Cheque(message.amount,message.Date)
             if (CheckDate(message.Date))
-                list.Find(x => x.Id == message.Id).cash += message.amount;
+            {  list.Find(x => x.Id == message.Id).cash += message.amount; ch.Checked = true }
+            list.Find(x => x.Id == message.Id).cheques.Add(ch) ;
+
+               
 
         }
 
@@ -79,6 +84,7 @@ namespace Account
         public void Handle(CashTransfered message)
         {
             list.Find(x => x.Id == message.id).cash -= message.amount;
+            list.Find(x => x.Id == message.id).DailyWireTransfetAchieved += message.amount;
         }
 
         public void Handle(OverDraftlimitSet message)
@@ -107,5 +113,5 @@ namespace Account
             return false;
         }
     }
-
+    */
 }

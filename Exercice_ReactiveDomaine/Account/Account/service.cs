@@ -11,7 +11,7 @@ namespace Reactjs_Account
 {
     public class Service
     {
-        public readonly AccountBalanceReadModel _readModel;
+       // public readonly AccountBalanceReadModel _readModel;
         public readonly IRepository _repo;
         public readonly AccountCommandHandler _cmdHandler;
 
@@ -28,7 +28,7 @@ namespace Reactjs_Account
             _cmdHandler = new AccountCommandHandler(_repo);
 
             var listener = new StreamListener("Account", conn, namer,ser);
-            _readModel = new AccountBalanceReadModel(() => listener);
+          //  _readModel = new AccountBalanceReadModel(() => listener);
         }
     }
 

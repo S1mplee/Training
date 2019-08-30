@@ -1,9 +1,9 @@
-﻿using ReactiveDomain.Messaging;
+﻿using Account;
 using System;
 
 namespace TestAccountBalance
 {
-    public class AccountCreated : Message
+    public class AccountCreated : Event
     {
         public readonly Guid Id;
         public string Holdername;

@@ -16,7 +16,7 @@ namespace Test
         public IStreamStoreConnection conn;
         public IRepository repo;
         public Guid _accountId = Guid.NewGuid();
-        public AccountBalanceReadModel _readModel;
+       // public AccountBalanceReadModel _readModel;
         public AccountCommandHandler Command;
         public TestService()
         {
@@ -29,7 +29,7 @@ namespace Test
             repo = new StreamStoreRepository(namer, conn, ser);
             // var acc = repo.GetById<AccountBalance>(Guid.Parse("e346c867-a9bb-4337-a91c-b8d51773897b"));
             IListener listener = new StreamListener("Account", conn, namer, ser);
-            _readModel = new AccountBalanceReadModel(() => listener);
+           // _readModel = new AccountBalanceReadModel(() => listener);
              Command = new AccountCommandHandler(repo);
         }
     }

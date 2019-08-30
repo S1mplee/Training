@@ -1,14 +1,10 @@
-﻿using ReactiveDomain.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Account;
 
 namespace TestAccountBalance
 {
 
-    public class ChequeDeposed : Message
+    public class ChequeDeposed : Event
     {
         public readonly Guid Id;
         public decimal amount;

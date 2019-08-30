@@ -193,6 +193,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeposeCashTest.cs" />
+    <Compile Include="EventStoreMock.cs" />
+    <Compile Include="ScenarioRunner.cs" />
     <Compile Include="TestAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDeposeCheque.cs" />

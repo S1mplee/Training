@@ -90,7 +90,6 @@ namespace Account
             catch(Exception ex)
             {
                 _repo.Save(acc);
-                throw new ArgumentException("");
             }
             return command.Succeed();
         }
