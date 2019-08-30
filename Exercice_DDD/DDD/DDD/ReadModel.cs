@@ -10,19 +10,17 @@ namespace DDD
 
         public void Handle(AccountCreated evt)
         {
-            account = new Account(evt.Id, evt._holderName, evt._overdraftLimit, evt._wireTransertLimit,evt._cash);
+           account = new Account(evt.AccountId, evt.HolderName);
 
         }
 
         public void Handle(AccountBlocked evt)
         {
-            if (account.Blocked == true) throw new InvalidOperationException("Already Blocked !");
             account.Blocked = true;
         }
 
         public void Handle(AccountUnBlocked evt)
         {
-            if (account.Blocked == false) throw new InvalidOperationException("Already UnBlocked !");
             account.Blocked = false;
         }
 
@@ -30,25 +28,21 @@ namespace DDD
 
         public void Handle(CashDeposed evt)
         {
-            if (evt.Amount < 0) throw new InvalidOperationException("Negative Amount !");
             account.Cash += evt.Amount;
         }
 
         public void Handle(CashTransfered evt)
         {
-            if (evt.Amount < 0) throw new InvalidOperationException("Negative Amount !");
             account.Cash += evt.Amount;
         }
 
         public void Handle(CashWithdrawn evt)
         {
-            if (evt.Amount < 0) throw new InvalidOperationException("Negative Amount !");
             account.Cash -= evt.Amount;
         }
 
         public void Handle(ChequeDeposed evt)
         {
-            if (evt.Amount < 0) throw new InvalidOperationException("Negative Amount !");
             account.Cash += evt.Amount;
         }
 
@@ -69,13 +63,10 @@ namespace DDD
         public decimal WireTransertLimit;
         public bool Blocked;
 
-        public Account(Guid id, string n, decimal d1, decimal d2, decimal d3)
+        public Account(Guid id, string name)
         {
             Id = id;
-            HolderName = n;
-            Cash = d3;
-            OverdraftLimit = d1;
-            WireTransertLimit = d2;
+            HolderName = name;
             Blocked = false;
         }
 

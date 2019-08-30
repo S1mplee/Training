@@ -8,6 +8,7 @@ namespace DDD.DomainModel
 {
     public class AggregateRoot
     {
+        public Guid Id;
         public readonly List<Event> events = new List<Event>();
     }
 }

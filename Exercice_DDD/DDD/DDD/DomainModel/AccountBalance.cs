@@ -1,107 +1,184 @@
-﻿using System;
+﻿
+using System;
+using System.Collections.Generic;
 
 namespace DDD.DomainModel
 {
     public class AccountBalance : AggregateRoot
     {
-        private Guid Id;
         private string _holderName;
-        private decimal _cash;
+        private decimal _balance;
         private decimal _overdraftLimit;
         private decimal _wireTransertLimit;
+        private decimal _DailywireTransfertAchieved;
         private bool _blocked;
+        private List<Cheque> _cheques = new List<Cheque>();
 
         public AccountBalance() : base()
         {
 
         }
 
-        public void Create(Guid id,string name,decimal overdraft,decimal wiretransfert,decimal cash)
+        public void Create(Guid id,string name)
         {
-             if (id == null || string.IsNullOrWhiteSpace(name) || overdraft < 0 || wiretransfert < 0 || cash < 0) throw new ArgumentException("Invalid Input !"); 
-
-            this.Id = id;
-            this._holderName = name;
-            this._overdraftLimit = overdraft;
-            this._wireTransertLimit = wiretransfert;
-            this._cash = cash;
-            this._blocked = false;
-
-            this.events.Add(new AccountCreated(id, name, overdraft, wiretransfert, cash,false));
+             if (id == null || string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid Input !");
+            var evt = new AccountCreated(id, name);
+            SetState(evt);
+            this.events.Add(evt);
 
         }
 
-        public void DeposeCheque(decimal amount)
+        public void SetOverDraftLimit(Guid id,decimal amount)
         {
-            if (amount <= 0) throw new ArgumentException("invalid Amount");
-            this._cash += amount;
-            this.events.Add(new ChequeDeposed(this.Id, amount));
+            if (id == null || amount < 0) throw new ArgumentException("Invalid Inputs");
+            var evt = new OverDraftlimitSet(id, amount);
+            SetState(evt);
+            this.events.Add(evt);
+        }
 
+        public void SetWireTransfertLimit(Guid id,decimal amount)
+        {
+            if (id == null || amount < 0) throw new ArgumentException("Invalid Inputs");
+            var evt = new DailyWireTransfertLimitSet(id, amount);
+            SetState(evt);
+            this.events.Add(evt);
+        }
+
+       
+        
+        public void DeposeCheque(Cheque cheque)
+        {
+            if (cheque.Amount <= 0) throw new ArgumentException("invalid Amount"); 
+
+            var evt = new ChequeDeposed(this.Id, cheque.Amount,cheque.Date);
+                SetState(evt);
+                this.events.Add(evt);
             
-            if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraftLimit) || this._cash >= 0))
+            if (_blocked == true && ((this._balance < 0 && (Math.Abs(this._balance)) < this._overdraftLimit) || this._balance >= 0))
             {
-                UnBlocked();
-                this.events.Add(new AccountUnBlocked(this.Id));
+                var evt2 = new AccountUnBlocked(this.Id);
+                SetState(evt2);
+                this.events.Add(evt2);
             }
         }
-
+        
+       
         public void DeposeCash(decimal amount)
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
-            this._cash += amount;
-            this.events.Add(new CashDeposed(this.Id, amount));
+            var evt = new CashDeposed(this.Id, amount);
+            SetState(evt);
+            this.events.Add(evt);
 
 
-            if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraftLimit) || this._cash >= 0))
+            if (_blocked == true && ((this._balance < 0 && (Math.Abs(this._balance)) < this._overdraftLimit) || this._balance >= 0))
             {
-                UnBlocked();
-                this.events.Add(new AccountUnBlocked(this.Id));
+                var evt2 = new AccountUnBlocked(this.Id);
+                SetState(evt2);
+                this.events.Add(evt2);
             }
         }
 
-        public void UnBlocked()
-        {
-            this._blocked = false;
-        }
 
         public void WithdrawCash(decimal amount)
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
-            if ((this._cash - amount) < 0  && Math.Abs(this._cash - amount) > this._overdraftLimit)
+            var Total = this._balance + this._overdraftLimit;
+            if (Total - amount < 0)
             {
-                blocked();
+                var evt = new AccountBlocked(this.Id);
+                SetState(evt);
                 this.events.Add(new AccountBlocked(this.Id));
                 throw new ArgumentException("OverDraft limit !");
             }
 
-            this._cash = this._cash - amount;
-            this.events.Add(new CashWithdrawn(this.Id, amount));
+            var evt2 = new CashWithdrawn(this.Id, amount);
+            SetState(evt2);
+            this.events.Add(evt2);
         }
 
-        public void blocked()
+
+
+        public void WireTransfer(decimal amount)
+        {
+            if (amount <= 0) throw new ArgumentException("invalid Amount");
+         
+            if (this._DailywireTransfertAchieved +  amount > this._wireTransertLimit)
+            {
+                var evt2 = new AccountBlocked(this.Id);
+                SetState(evt2);
+                this.events.Add(evt2);
+            } else
+            {
+                var evt = new CashTransfered(this.Id, amount);
+                SetState(evt);
+                this.events.Add(evt);
+            }
+
+          
+
+        }
+        public void SetState(ChequeDeposed evt)
+        {
+            var cheque = new Cheque(evt.Amount, evt.Date);
+            if (VerifDate(evt.Date))
+            {
+                this._balance += cheque.Amount;
+                cheque.Checked = true;
+            }
+            this._cheques.Add(cheque);
+        }
+
+        public void SetState(CashTransfered evt)
+        {
+            this._balance -= evt.Amount;
+            this._DailywireTransfertAchieved += evt.Amount;
+        }
+
+        public void SetState(AccountCreated evt)
+        {
+            this.Id = evt.AccountId;
+            this._holderName = evt.HolderName;
+            this._blocked = false;
+        }
+
+        public void SetState(CashDeposed evt)
+        {
+            this._balance += evt.Amount;
+        }
+
+        public void SetState(CashWithdrawn evt)
+        {
+            this._balance -= evt.Amount;
+        }
+
+        public void SetState(AccountBlocked evt)
         {
             this._blocked = true;
         }
 
-        public void WireTransfer(Guid reciverId,decimal amount)
+        public void SetState(AccountUnBlocked evt)
         {
-            if (amount <= 0) throw new ArgumentException("invalid Amount");
-
-            this._cash = this._cash - amount;
-            this.events.Add(new CashTransfered(this.Id, reciverId, amount));
-
-            if (amount > this._wireTransertLimit)
-            {
-                blocked();
-                this.events.Add(new AccountBlocked(this.Id));
-            }
+            this._blocked = false;
         }
 
-        public override string ToString()
+        public void SetState(OverDraftlimitSet evt)
         {
-            return "" + Id + " Name :" + _holderName + " cash: " + _cash + " Overdraft :" + _overdraftLimit + " Wire :" + _wireTransertLimit + " Blocked :" + _blocked;
+            this._overdraftLimit = evt.Amount;
         }
 
+        public void SetState(DailyWireTransfertLimitSet evt)
+        {
+            this._wireTransertLimit = evt.Amount;
+        }
+
+        private bool VerifDate(DateTime date)
+        {
+            if (date.DayOfWeek >= DayOfWeek.Monday && date.DayOfWeek <= DayOfWeek.Friday
+             && date.TimeOfDay >= TimeSpan.Parse("09:00:00")
+             && date.TimeOfDay <= TimeSpan.Parse("17:00:00")) return true; 
+            return false;
+        }
 
 
     }

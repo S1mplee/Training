@@ -1,11 +1,12 @@
 ﻿
 using DDD.DomainModel;
+using System;
 
 namespace DDD.DomainService
 {
-    interface IRepository<T> where T: AggregateRoot
+    public interface IRepository<T> where T: AggregateRoot
     {
         void SaveEvents(AggregateRoot agg);
-        AggregateRoot GetbyID(string id);
+        AggregateRoot GetbyID(Guid id);
     }
 }

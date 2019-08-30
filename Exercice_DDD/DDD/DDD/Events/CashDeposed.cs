@@ -5,10 +5,10 @@ public class CashDeposed : Event
     public  Guid AccountId ;
     public  decimal Amount;
 
-    public CashDeposed(Guid id,decimal a)
+    public CashDeposed(Guid id,decimal amount)
     {
         this.AccountId = id;
-        this.Amount = a;
+        this.Amount = amount;
     }
 
     public override string ToString()

@@ -4,11 +4,12 @@ public class ChequeDeposed : Event
 {
     public  Guid AccountId;
     public  decimal Amount;
-
-    public ChequeDeposed(Guid id, decimal a)
+    public DateTime Date;
+    public ChequeDeposed(Guid id, decimal amount,DateTime date)
     {
         this.AccountId = id;
-        this.Amount = a;
+        this.Amount = amount;
+        this.Date = date;
     }
 
     public override string ToString()

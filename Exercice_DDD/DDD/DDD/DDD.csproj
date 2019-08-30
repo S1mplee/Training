@@ -55,6 +55,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cheque.cs" />
+    <Compile Include="Command\CreateAccount.cs" />
+    <Compile Include="Command\DeposeCash.cs" />
+    <Compile Include="Command\DeposeCheque.cs" />
+    <Compile Include="Command\SetDailyTransfertLimit.cs" />
+    <Compile Include="Command\SetOverdraftLimit.cs" />
+    <Compile Include="Command\TransferCash.cs" />
+    <Compile Include="Command\WithDrawCash.cs" />
     <Compile Include="Events\AccountBlocked.cs" />
     <Compile Include="Events\AccountCreated.cs" />
     <Compile Include="Events\AccountUnBlocked.cs" />
@@ -70,6 +78,8 @@
     <Compile Include="DomainService\IRepository.cs" />
     <Compile Include="DomainService\Repository.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="Events\OverDraftLimit.cs" />
+    <Compile Include="Events\DailyWireTransfertLimit.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IEventHandler.cs" />
     <Compile Include="Program.cs" />
