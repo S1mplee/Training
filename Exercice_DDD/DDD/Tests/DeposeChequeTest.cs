@@ -38,7 +38,7 @@ namespace Tests
             var cmd = new CreateAccount(g, "Ahmed");
             var cmd2 = new DeposeCheque(g,amount,date);
             var evt1 = new AccountCreated(g, "Ahmed");
-            var evt2 = new ChequeDeposed(g, amount, date,acc.GetValidDate(date));
+            var evt2 = new ChequeDeposed(g, amount, date,acc.GetReleaseDate(date));
 
 
             await sc.Run(def => def.Given()
@@ -59,7 +59,7 @@ namespace Tests
             var cmd4 = new WithDrawCash(g, 400);
 
             var evt1 = new AccountCreated(g, "Ahmed");
-            var evt2 = new ChequeDeposed(g, 100,date,acc.GetValidDate(date));
+            var evt2 = new ChequeDeposed(g, 100,date,acc.GetReleaseDate(date));
             var evt3 = new OverDraftlimitSet(g, 100);
             var evt5 = new AccountBlocked(g);  // expected event
 

@@ -61,7 +61,7 @@ namespace DDD
         {
             AccountBalance acc = (AccountBalance)_repo.GetbyID(cmd.AccountId);
             if (acc == null) throw new InvalidOperationException("Does not Exist");
-            acc.WireTransfer(cmd.Amount);
+            acc.WireTransfer(cmd.Amount,cmd.TransferDate);
             _repo.SaveEvents(acc);
         }
 

@@ -49,9 +49,9 @@ namespace DDD.DomainModel
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
 
-            var ValidDate = GetValidDate(DepositDate);
+            var ReleaseDate = GetReleaseDate(DepositDate);
 
-            var evt = new ChequeDeposed(this.Id,amount,DepositDate,ValidDate);
+            var evt = new ChequeDeposed(this.Id,amount,DepositDate, ReleaseDate);
                 SetState(evt);
                 this.events.Add(evt);
             
@@ -100,7 +100,7 @@ namespace DDD.DomainModel
 
 
 
-        public void WireTransfer(decimal amount,DateTime date)
+        public void WireTransfer(decimal amount,DateTime TransferDate)
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
          
@@ -111,7 +111,7 @@ namespace DDD.DomainModel
                 this.events.Add(evt2);
             } else
             {
-                var evt = new CashTransfered(this.Id, amount,date);
+                var evt = new CashTransfered(this.Id, amount, TransferDate);
                 SetState(evt);
                 this.events.Add(evt);
             }
@@ -121,7 +121,7 @@ namespace DDD.DomainModel
         }
         public void SetState(ChequeDeposed evt)
         {
-            if (evt.DepositDate == evt.ClearDate)
+            if (DateTime.Now >= evt.ClearDate)
             {
                 this._balance += evt.Amount;
             }
@@ -129,7 +129,7 @@ namespace DDD.DomainModel
 
         public void SetState(CashTransfered evt)
         {
-            if ((DateTime.Now - evt.LastTransfer).Hours > 24)
+            if ((DateTime.Now - evt.TransferDate).TotalHours > 24)
             {
                 this._DailywireTransfertAchieved = 0;
             }
@@ -186,7 +186,7 @@ namespace DDD.DomainModel
         }
 
         //Gets The Next Business Day
-        public DateTime GetValidDate(DateTime date)
+        public DateTime GetReleaseDate(DateTime date)
         {
             var date1 = DateTime.Parse(date.Date.ToString());
             var date_8h = date1.AddHours(8);

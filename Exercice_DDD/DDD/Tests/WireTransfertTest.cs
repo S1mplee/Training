@@ -21,7 +21,7 @@ namespace Tests
             var acc = new AccountBalance();
             var g = Guid.NewGuid();
             acc.Create(g, "Mohamed");
-            Assert.Throws<ArgumentException>(() => acc.WireTransfer(amount));
+            Assert.Throws<ArgumentException>(() => acc.WireTransfer(amount,DateTime.Now));
         }
 
         [Fact]
@@ -34,11 +34,11 @@ namespace Tests
 
             var cmd = new CreateAccount(g, "Ahmed");
             var cmd2 = new SetDailyTransfertLimit(g, 100);
-            var cmd3 = new TransferCash(g, 80);
+            var cmd3 = new TransferCash(g, 80,date);
 
             var evt1 = new AccountCreated(g, "Ahmed");
             var evt2 = new DailyWireTransfertLimitSet(g, 100);
-            var evt3 = new CashTransfered(g, 80);
+            var evt3 = new CashTransfered(g, 80,date);
 
 
             await sc.Run(def => def.Given()
@@ -56,7 +56,7 @@ namespace Tests
 
             var cmd = new CreateAccount(g, "Ahmed");
             var cmd2 = new SetDailyTransfertLimit(g, 100);
-            var cmd3 = new TransferCash(g, 200);
+            var cmd3 = new TransferCash(g, 200,date);
 
             var evt1 = new AccountCreated(g, "Ahmed");
             var evt2 = new DailyWireTransfertLimitSet(g, 100);
