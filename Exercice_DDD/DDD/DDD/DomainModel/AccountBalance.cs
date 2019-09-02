@@ -55,7 +55,7 @@ namespace DDD.DomainModel
                 SetState(evt);
                 this.events.Add(evt);
             
-            if (_blocked == true && ((this._balance < 0 && (Math.Abs(this._balance)) < this._overdraftLimit) || this._balance >= 0))
+            if (_blocked == true )
             {
                 var evt2 = new AccountUnBlocked(this.Id);
                 SetState(evt2);
@@ -72,7 +72,7 @@ namespace DDD.DomainModel
             this.events.Add(evt);
 
 
-            if (_blocked == true && ((this._balance < 0 && (Math.Abs(this._balance)) < this._overdraftLimit) || this._balance >= 0))
+            if (_blocked == true )
             {
                 var evt2 = new AccountUnBlocked(this.Id);
                 SetState(evt2);
@@ -85,6 +85,7 @@ namespace DDD.DomainModel
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
             var Total = this._balance + this._overdraftLimit;
+
             if (Total - amount < 0)
             {
                 var evt = new AccountBlocked(this.Id);

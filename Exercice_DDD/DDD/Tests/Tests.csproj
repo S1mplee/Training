@@ -125,6 +125,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CashWithDrawnTest.cs" />
     <Compile Include="DeposeCashTest.cs" />
     <Compile Include="EventStoreMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

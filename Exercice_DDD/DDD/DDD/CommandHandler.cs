@@ -51,7 +51,9 @@ namespace DDD
             try
             {
                 acc.WithdrawCash(cmd.Amount);
-            }catch(Exception ex)
+                _repo.SaveEvents(acc);
+            }
+            catch (Exception ex)
             {
                 _repo.SaveEvents(acc);
             }
