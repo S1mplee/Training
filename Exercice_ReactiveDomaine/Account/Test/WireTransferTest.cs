@@ -1,12 +1,70 @@
-﻿using System;
+﻿using Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestAccountBalance;
+using Xunit;
+using Xunit.ScenarioReporting;
 
 namespace Test
 {
-    class WireTransferTest
+    public class WireTransfertTest
     {
+        [Theory]
+        [InlineData(-200)]
+        [InlineData(0)]
+        [InlineData(-200.56)]
+        public void TransfertMoney_WithInvalidAmountShouldThrowException(decimal amount)
+        {
+            var acc = new AccountBalance();
+            var g = Guid.NewGuid();
+            Assert.Throws<ArgumentException>(() => acc.WireTransfer(amount, DateTime.Now));
+        }
+
+        [Fact]
+        public async Task TransfertCash_WithValidAmount_ShouldGenerateOneEvent()
+        {
+            var sc = new ScenarioRunner();
+
+            var g = Guid.NewGuid();
+            var date = DateTime.Now;
+
+            var cmd = new CreateAccount(g, "Ahmed");
+            var cmd2 = new SetDailyTransfertLimit(g, 100);
+            var cmd3 = new TransferCash(g, 80, date);
+
+            var evt1 = new AccountCreated(g, "Ahmed");
+            var evt2 = new DailyWireTransfertLimitSet(g, 100);
+            var evt3 = new CashTransfered(g, 80, date);
+
+
+            await sc.Run(def => def.Given()
+            .When(new List<object> { cmd, cmd2, cmd3 })
+            .Then(evt1, evt2, evt3));
+        }
+
+        [Fact]
+        public async Task TransfertCash_WithInValidAmount_BlockAccountt()
+        {
+            var sc = new ScenarioRunner();
+
+            var g = Guid.NewGuid();
+            var date = DateTime.Now;
+
+            var cmd = new CreateAccount(g, "Ahmed");
+            var cmd2 = new SetDailyTransfertLimit(g, 100);
+            var cmd3 = new TransferCash(g, 200, date);
+
+            var evt1 = new AccountCreated(g, "Ahmed");
+            var evt2 = new DailyWireTransfertLimitSet(g, 100);
+            var evt3 = new AccountBlocked(g);
+
+
+            await sc.Run(def => def.Given()
+            .When(new List<object> { cmd, cmd2, cmd3 })
+            .Then(evt1, evt2, evt3));
+        }
     }
 }

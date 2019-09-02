@@ -198,9 +198,8 @@
     <Compile Include="TestAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDeposeCheque.cs" />
-    <Compile Include="TestService.cs" />
     <Compile Include="WireTransferTest.cs" />
-    <Compile Include="WireTransfertLimit.cs" />
+    <Compile Include="SetOverDraftLimitTest.cs" />
     <Compile Include="WithDrawCashTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,12 +8,12 @@ namespace TestAccountBalance
     {
         public readonly Guid Id;
         public decimal amount;
-        public readonly DateTime Date;
+        public readonly DateTime ReleaseDate;
         public ChequeDeposed(Guid id,decimal amount,DateTime date)
         {
             this.Id = id;
             this.amount = amount;
-            this.Date = date;
+            this.ReleaseDate = date;
         }
     }
 }

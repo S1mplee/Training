@@ -1,4 +1,5 @@
 ﻿using Account;
+using Account.Commands;
 using ReactiveDomain.Messaging;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestAccountBalance;
 using Xunit;
+using Xunit.ScenarioReporting;
 
 namespace Test
 {
@@ -20,7 +22,7 @@ namespace Test
         {
             var acc = new AccountBalance();
             var g = Guid.NewGuid();
-            Assert.Throws<ArgumentException>(() => acc.DeposeCheque(new Cheque(amount, DateTime.Now)));
+            Assert.Throws<ArgumentException>(() => acc.DeposeCheque(amount,DateTime.Now));
         }
 
         [Theory]
@@ -33,14 +35,16 @@ namespace Test
 
             var g = Guid.NewGuid();
             var date = DateTime.Now;
+            var ac = new AccountBalance();
             var cmd = new CreateAccount(g, "Ahmed");
             var cmd2 = new DeposeCheque(g, amount, date);
+
             var evt1 = new AccountCreated(g, "Ahmed");
-            var evt2 = new ChequeDeposed(g, amount, date);
+            var evt2 = new ChequeDeposed(g, amount, ac.GetReleaseDate(date));
 
 
             await sc.Run(def => def.Given()
-            .When(new List<Command> { cmd, cmd2 })
+            .When(new List<object> { cmd, cmd2 })
             .Then(evt1, evt2));
         }
 
@@ -51,19 +55,23 @@ namespace Test
 
             var g = Guid.NewGuid();
             var date = DateTime.Now;
+            var ac = new AccountBalance();
+
             var cmd = new CreateAccount(g, "Ahmed");
             var cmd2 = new DeposeCheque(g, 100, date); // command
             var cmd3 = new SetOverdraftLimit(g, 100);
             var cmd4 = new WithDrawCash(g, 400);
+            var cmd5 = new DeposeCheque(g, 100,date);
 
             var evt1 = new AccountCreated(g, "Ahmed");
-            var evt2 = new ChequeDeposed(g, 100, date);
+            var evt2 = new ChequeDeposed(g, 100, ac.GetReleaseDate(date));
             var evt3 = new OverDraftlimitSet(g, 100);
             var evt5 = new AccountBlocked(g);  // expected event
+            var evt6 = new AccountUnblocked(g);
 
             await sc.Run(def => def.Given()
-           .When(new List<Command> { cmd, cmd2, cmd3, cmd4 })
-           .Then(evt1, evt2, evt3, evt5));
+           .When(new List<object> { cmd, cmd2, cmd3, cmd4 , cmd5})
+           .Then(evt1, evt2, evt3, evt5, evt2,evt6));
         }
     }
 }
@@ -121,4 +129,4 @@ namespace Test
         }
     }
     */
-}
+

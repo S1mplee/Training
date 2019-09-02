@@ -1,61 +1,45 @@
 ﻿using Account;
+using Account.Commands;
 using ReactiveDomain.Messaging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+using TestAccountBalance;
 using Xunit;
+using Xunit.ScenarioReporting;
 
 namespace Test
 {
-    /*
-    public class WithDrawCashTest : TestService
+    public class WithDrawCashTest
     {
-        public WithDrawCashTest(): base()
+        [Fact]
+        public void WithDraw_WithInvalid_Amount_Should_Throw_Exception()
         {
-
+            var acc = new AccountBalance();
+            Assert.Throws<ArgumentException>(() => acc.WithdrawCash(-200));
         }
 
         [Fact]
-        public void can_withdraw_with_valid_account()
+        public async Task WithDraw_Cash_ValidAmount_Should_WorkAsync()
         {
+            var sc = new ScenarioRunner();
+
             var g = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "bilel");
-            this.Command.Handle(cmd);
-            var cmd2 = new WithDrawCash(g, 200);
-            Assert.IsType<Success>(this.Command.Handle(cmd2));
-        }
+            var cmd = new CreateAccount(g, "Ahmed");
+            var cmd2 = new DeposeCash(g, 100); // command
+            var cmd3 = new SetOverdraftLimit(g, 100);
+            var cmd4 = new WithDrawCash(g, 100);
 
-        [Fact]
-        public void can_not_withdraw_with_Invalid_account()
-        {
-            var cmd = new WithDrawCash(Guid.NewGuid(), 200);
-            Assert.Throws<InvalidOperationException>(() => this.Command.Handle(cmd));
-        }
+            var evt1 = new AccountCreated(g, "Ahmed");
+            var evt2 = new CashDeposed(g, 100);
+            var evt3 = new OverDraftlimitSet(g, 100);
+            var evt4 = new CashWithdrawn(g, 100);
 
-        [Fact]
-        public void can_not_withdraw_with_Invalid_amount()
-        {
-            var g = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "bilel");
-            this.Command.Handle(cmd);
-            var cmd2 = new WithDrawCash(g, -200);
-            Assert.Throws<ArgumentException>(() => this.Command.Handle(cmd2));
-        }
+            await sc.Run(def => def.Given()
+        .When(new List<object> { cmd, cmd2, cmd3, cmd4 })
+        .Then(evt1, evt2, evt3, evt4));
 
-        [Fact]
-        public void can_Withdraw_Block_Account()
-        {
-            var g = Guid.NewGuid();
-            var cmd = new CreateAccount(g, "bilel");
-            this.Command.Handle(cmd);
-            var cmd2 = new WithDrawCash(g, 2000);
-            Assert.Throws<ArgumentException>(() => this.Command.Handle(cmd2));
-            Thread.Sleep(2000);
-            Assert.True(this._readModel.list.Find(x => x.Id == g).blocked);
         }
     }
-    */
+   
 }

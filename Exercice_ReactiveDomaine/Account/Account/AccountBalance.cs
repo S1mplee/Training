@@ -17,7 +17,6 @@ namespace TestAccountBalance
         private decimal _wiretranferlimit;
         private decimal _dailyTransfertAmount;
         private bool _blocked;
-        private List<Cheque> _list;
 
         public AccountBalance(Guid id,string name) : this()
         {
@@ -41,12 +40,11 @@ namespace TestAccountBalance
             
             Register<ChequeDeposed>(evt =>
             {
-                var ch = new Cheque(evt.amount, evt.Date);
-                if (CheckDate(evt.Date)) { this._cash += ch.Amount;
-                    ch.Checked = true;
+               if (DateTime.Now >= evt.ReleaseDate)
+                {
+                    this._cash += evt.amount;
                 }
 
-                this._list.Add(ch);
             });
             Register<CashDeposed>(evt => this._cash += evt.amount);
             Register<AccountUnblocked>(evt => _blocked = false);
@@ -54,6 +52,9 @@ namespace TestAccountBalance
             Register<CashWithdrawn>(evt => this._cash -= evt.amount);
             Register<CashTransfered>(evt =>
             {
+                if ((DateTime.Now - evt.TransferDate).TotalHours > 24)
+                { this._dailyTransfertAmount = 0; }
+
                 this._cash -= evt.amount;
                 this._dailyTransfertAmount += evt.amount;
             });
@@ -63,12 +64,15 @@ namespace TestAccountBalance
         }
 
        
-        public void DeposeCheque(decimal amount,DateTime date)
+        public void DeposeCheque(decimal amount,DateTime DepositDate)
         {
             if (amount <= 0) throw new ArgumentException("Invalid amount");
-            Raise(new ChequeDeposed(this.Id, amount,date));
 
-            if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraft) || this._cash >= 0))
+            var ReleaseDate = GetReleaseDate(DepositDate);
+
+            Raise(new ChequeDeposed(this.Id, amount, ReleaseDate));
+
+            if (_blocked == true )
             {
                 Raise(new AccountUnblocked(Id));
             }
@@ -92,7 +96,7 @@ namespace TestAccountBalance
             Raise(new CashDeposed(this.Id, amount));
 
 
-            if (_blocked == true && ((this._cash < 0 && (Math.Abs(this._cash)) < this._overdraft) || this._cash >= 0))
+            if (_blocked == true)
             {
                 Raise(new AccountUnblocked(this.Id));
             }
@@ -112,7 +116,7 @@ namespace TestAccountBalance
             
         }
 
-        public void WireTransfer(decimal amount)
+        public void WireTransfer(decimal amount,DateTime TransferDate)
         {
             if (amount <= 0) throw new ArgumentException("invalid Amount");
 
@@ -122,7 +126,7 @@ namespace TestAccountBalance
                 throw new ArgumentException("Daily Wire Transfert Limit Surpassed !");
             }
 
-            Raise(new CashTransfered(this.Id, amount));
+            Raise(new CashTransfered(this.Id, amount, TransferDate));
 
             
         }
@@ -133,6 +137,52 @@ namespace TestAccountBalance
             && date.TimeOfDay >= TimeSpan.Parse("09:00:00")
             && date.TimeOfDay <= TimeSpan.Parse("17:00:00")) return true;
             return false;
+        }
+
+        public DateTime GetReleaseDate(DateTime date)
+        {
+            var date1 = DateTime.Parse(date.Date.ToString());
+            var date_8h = date1.AddHours(8);
+            var date_17h = date1.AddHours(17);
+
+            if (date1.DayOfWeek == DayOfWeek.Sunday)
+            {
+                var d = date1.AddHours(32);
+                return d;
+            }
+            else if (date1.DayOfWeek == DayOfWeek.Saturday)
+            {
+                var d = date1.AddHours(56);
+                return d;
+            }
+            else if (date1.DayOfWeek == DayOfWeek.Friday && date.Hour >= 17)
+            {
+                var d = date1.AddHours(80);
+                return d;
+            }
+
+
+
+            else if (date < date_8h)
+            {
+                var m = DateTime.Parse(date.Date.ToString());
+                var c = m.AddHours(8);
+
+                var businessDay = date + (c - date);
+                return businessDay;
+            }
+
+            else if (date > date_17h)
+            {
+                var k = DateTime.Parse(date.Date.ToString());
+                var mm = k.AddHours(32);
+
+                var businessDay = date + (mm - date);
+                return businessDay;
+            }
+
+
+            return date;
         }
 
     }

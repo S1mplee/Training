@@ -96,12 +96,19 @@ namespace Account
 
         public CommandResponse Handle(TransferCash command)
         {
-            if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc) || !_repo.TryGetById<AccountBalance>(command.reciverId, out AccountBalance acc2))
+            if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc) )
             {
                 throw new InvalidOperationException("Does Not Exist !");
             }
-            acc.WireTransfer(command.amount);
-            _repo.Save(acc);
+            try
+            {
+                acc.WireTransfer(command.amount, command.TransferDate);
+                _repo.Save(acc);
+            }catch(Exception ex)
+            {
+                _repo.Save(acc);
+            }
+          
             return command.Succeed();
         }
 
@@ -111,7 +118,7 @@ namespace Account
             {
                 throw new InvalidOperationException("Does Not Exist !");
             }
-            acc.DeposeCheque(command.amount,command.Date);
+            acc.DeposeCheque(command.amount,command.DepositDate);
             _repo.Save(acc);
             return command.Succeed();
         }
