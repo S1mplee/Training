@@ -115,6 +115,7 @@ namespace HelloWorld
                 {
                     if (!app._readModel.Assets.TryGetValue(SimpleDropDownValue2, out OrderDetail or))
                     {
+                        this.message3 = " You dont have Any Assets To sell";
                         throw new InvalidOperationException("You dont have Any Assets To sell ");
                     }
                     else if (or.Quantite < qts)
