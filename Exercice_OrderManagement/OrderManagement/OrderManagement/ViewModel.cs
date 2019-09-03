@@ -2,9 +2,7 @@
 using DotNetify;
 using System.Threading;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using OrderManage;
 using TESTDICT;
 
 namespace HelloWorld
