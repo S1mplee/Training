@@ -56,7 +56,7 @@ namespace TestAccountBalance
                 { this._dailyTransfertAmount = 0; }
 
                 this._cash -= evt.amount;
-                this._dailyTransfertAmount += evt.amount;
+                this._dailyTransfertAmount = this._dailyTransfertAmount + evt.amount;
             });
             Register<OverDraftlimitSet>(evt => this._overdraft = evt.amount);
             Register<DailyWireTransfertLimitSet>(evt => this._wiretranferlimit = evt.amount);

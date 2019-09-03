@@ -1,14 +1,15 @@
 ﻿using System;
 using Account;
+using ReactiveDomain.Messaging;
 
 namespace TestAccountBalance
 {
 
-    public class ChequeDeposed : Event
+    public class ChequeDeposed : Message
     {
         public readonly Guid Id;
         public decimal amount;
-        public readonly DateTime ReleaseDate;
+        public  DateTime ReleaseDate;
         public ChequeDeposed(Guid id,decimal amount,DateTime date)
         {
             this.Id = id;

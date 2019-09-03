@@ -9,7 +9,7 @@ using TestAccountBalance;
 
 namespace Account
 {
-    /*
+    
     public class AccountBalanceReadModel :
         ReadModelBase,
         IHandle<AccountCreated>,
@@ -49,13 +49,10 @@ namespace Account
 
         public void Handle(ChequeDeposed message)
         {
-        var ch = new Cheque(message.amount,message.Date)
-            if (CheckDate(message.Date))
-            {  list.Find(x => x.Id == message.Id).cash += message.amount; ch.Checked = true }
-            list.Find(x => x.Id == message.Id).cheques.Add(ch) ;
-
-               
-
+            if (DateTime.Now >=  message.ReleaseDate)
+            {
+                list.Find(x => x.Id == message.Id).cash += message.amount;
+            }
         }
 
         public void Handle(AccountUnblocked message)
@@ -83,6 +80,9 @@ namespace Account
 
         public void Handle(CashTransfered message)
         {
+            if ((DateTime.Now - message.TransferDate).TotalHours > 24)
+                list.Find(x => x.Id == message.id).DailyWireTransfetAchieved = 0;
+
             list.Find(x => x.Id == message.id).cash -= message.amount;
             list.Find(x => x.Id == message.id).DailyWireTransfetAchieved += message.amount;
         }
@@ -105,13 +105,7 @@ namespace Account
             }
         }
 
-        private bool CheckDate(DateTime date)
-        {
-            if (date.DayOfWeek >= DayOfWeek.Monday && date.DayOfWeek <= DayOfWeek.Friday
-            && date.TimeOfDay >= TimeSpan.Parse("09:00:00")
-            && date.TimeOfDay <= TimeSpan.Parse("17:00:00")) return true;
-            return false;
-        }
+     
     }
-    */
+    
 }
