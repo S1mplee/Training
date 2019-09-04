@@ -18,7 +18,6 @@ namespace AccountBalance_ReactJs
             services.AddSignalR();
             services.AddDotNetify();
             services.AddSingleton<Service>();
-            services.AddSingleton<EditViewModel>();
         }
 
         public void Configure(IApplicationBuilder app)
