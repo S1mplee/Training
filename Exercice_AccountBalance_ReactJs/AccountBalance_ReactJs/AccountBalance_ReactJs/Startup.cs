@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetify;
+using Reactjs_Account;
 
-namespace Reactjs_Account
+namespace AccountBalance_ReactJs
 {
     public class Startup
     {
