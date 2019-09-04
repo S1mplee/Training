@@ -131,7 +131,7 @@ class Account extends Component {
                                                     onChange={e => this.setState({ value: e.target.value })} value={this.state.value} aria-label="Amount (to the nearest dollar)" />
                                                 <button className="btn btn-info  btn-sm m-2" onClick={(e) => togglePopup(acc.Id, e)}>Edit </button>
 
-                                                <button onClick={e => this.dispatchState({ Tid: acc.Id })}  className="btn btn-warning  btn-sm m-2">Transf </button>
+                                                <button disabled={acc.blocked} onClick={e => this.dispatchState({ Tid: acc.Id })}  className="btn btn-warning  btn-sm m-2">Transf </button>
                                                 
                                             </div>                                            
                                           
