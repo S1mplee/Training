@@ -29,7 +29,7 @@ namespace HelloWorld
         }
 
 
-        private Application app;
+        private Service App;
 
         public List<string> SimpleDropDownOptions => new List<string> { "Buy", "Sell" };
         public string SimpleDropDownValue
@@ -66,16 +66,16 @@ namespace HelloWorld
         public string Total { get; set; }
 
 
-        public ViewModel()
+        public ViewModel(Service app)
         {
             dict = new Dictionary<string, OrderDetail>();
-            app = new Application();
-             app.Bootstrap();
+            this.App = app;
+             App.Bootstrap();
             // Thread.Sleep(1000);
-            this.history = app._readModel.history;
-            this.Assets = app._readModel.Assets.Keys.ToList();
-            this.dict = app._readModel.Assets;
-            this.Total = ""+app._readModel.Total;
+            this.history = App._readModel.history;
+            this.Assets = App._readModel.Assets.Keys.ToList();
+            this.dict = App._readModel.Assets;
+            this.Total = ""+ App._readModel.Total;
 
             Changed(nameof(history));
             Changed(nameof(Assets));
@@ -108,11 +108,13 @@ namespace HelloWorld
                     this.message1 = "Price should be numeric !";
                     throw new ArgumentException("Price should be numeric !"); }
 
+                if (qts <= 0 || price <= 0) throw new ArgumentException("Values Should Be postive !");
+
                 var Cmd = new CreateOrder(Guid.NewGuid(), SimpleDropDownValue, SimpleDropDownValue2, price, qts);
 
                 if (SimpleDropDownValue.ToLower().Equals("sell"))
                 {
-                    if (!app._readModel.Assets.TryGetValue(SimpleDropDownValue2, out OrderDetail or))
+                    if (!App._readModel.Assets.TryGetValue(SimpleDropDownValue2, out OrderDetail or))
                     {
                         this.message3 = " You dont have Any Assets To sell";
                         throw new InvalidOperationException("You dont have Any Assets To sell ");
@@ -123,17 +125,17 @@ namespace HelloWorld
                         throw new InvalidOperationException("You dont have Any Assets To sell ");
                     }else
                     {
-                        app.cmd.Handle(Cmd);
+                        App.cmd.Handle(Cmd);
                     }
                 }
                 else
                 {
-                    app.cmd.Handle(Cmd);
+                    App.cmd.Handle(Cmd);
 
                 }
 
                 Thread.Sleep(1000);
-                this.history = app._readModel.history;
+                this.history = App._readModel.history;
                 Changed(nameof(history));
             }catch(Exception ex)
             {
@@ -143,7 +145,7 @@ namespace HelloWorld
                 Changed(nameof(history));
             }
 
-            this.Total = "" + app._readModel.Total;
+            this.Total = "" + App._readModel.Total;
 
             Changed(nameof(dict));
             Changed(nameof(Total));

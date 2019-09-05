@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetify;
+using TESTDICT;
 
 namespace OrderManagement
 {
@@ -16,6 +17,7 @@ namespace OrderManagement
             services.AddMemoryCache();
             services.AddSignalR();
             services.AddDotNetify();
+            services.AddSingleton<Service>();
         }
 
         public void Configure(IApplicationBuilder app)

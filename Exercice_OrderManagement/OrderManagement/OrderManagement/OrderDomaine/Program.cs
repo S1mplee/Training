@@ -6,7 +6,7 @@ using System;
 
 namespace TESTDICT
 {
-    public class Application
+    public class Service
     {
         private IStreamStoreConnection conn;
         public IRepository repo;
