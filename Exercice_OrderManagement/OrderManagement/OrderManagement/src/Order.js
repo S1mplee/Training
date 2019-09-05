@@ -7,10 +7,6 @@ export default class Order extends React.Component {
         this.vm = dotnetify.react.connect("ViewModel", this);
         this.state = {
             d: "", list: [], textMessage: "", TextBoxValue: '',
-            SearchBox: '',
-            SearchResults: [],
-            ShowMeCheckBox: true,
-            EnableMeCheckBox: true,
             SimpleDropDownValue: '',
             SimpleDropDownOptions: [],
             DropDownValue: '',
@@ -35,15 +31,6 @@ export default class Order extends React.Component {
     
    
     render() {
-       const method = () => {
-            this.setState({
-                textMessage: `${this.state.textMessage}\n qsdqdssqd`
-            });
-        }
-        const handle = e => this.setState({ d: e.target.value });
-        const handleSubmit = () => {
-            this.vm.$dispatch({  value : 5});
-        }
 
         return (
           
@@ -141,7 +128,7 @@ export default class Order extends React.Component {
                             <div class="form-group">
                                 <div class="form-group shadow-textarea">
                                     <label for="exampleFormControlTextarea6" style={{ color: 'green' }}>History : </label>
-                                    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="3" placeholder="History." value={this.state.hii}></textarea>
+                                    <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="3" placeholder="History." value={this.state.history}></textarea>
                                 </div>
                             </div>
                         </div>

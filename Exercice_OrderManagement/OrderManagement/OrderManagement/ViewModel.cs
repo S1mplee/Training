@@ -30,6 +30,7 @@ namespace HelloWorld
 
 
         private Application app;
+
         public List<string> SimpleDropDownOptions => new List<string> { "Buy", "Sell" };
         public string SimpleDropDownValue
         {
@@ -54,7 +55,7 @@ namespace HelloWorld
         }
         public string SimpleDropDownResult2 => $"You selected : " + SimpleDropDownValue2;
 
-        public string hii { get; set; }
+        public string history { get; set; }
 
         public string message1 { get; set; }
 
@@ -65,20 +66,18 @@ namespace HelloWorld
         public string Total { get; set; }
 
 
-        public DateTime ServerTime => DateTime.Now;
-
         public ViewModel()
         {
             dict = new Dictionary<string, OrderDetail>();
             app = new Application();
              app.Bootstrap();
             // Thread.Sleep(1000);
-            this.hii = app._readModel.history;
+            this.history = app._readModel.history;
             this.Assets = app._readModel.Assets.Keys.ToList();
             this.dict = app._readModel.Assets;
             this.Total = ""+app._readModel.Total;
 
-            Changed(nameof(hii));
+            Changed(nameof(history));
             Changed(nameof(Assets));
             Changed(nameof(dict));
             Changed(nameof(Total));
@@ -120,7 +119,7 @@ namespace HelloWorld
                     }
                     else if (or.Quantite < qts)
                     {
-                        this.hii += " Can t Sell " + Cmd.Quantite + " " + Cmd.Asset + " Not Enough Quantite \n";
+                        this.history += " Can t Sell " + Cmd.Quantite + " " + Cmd.Asset + " Not Enough Quantite \n";
                         throw new InvalidOperationException("You dont have Any Assets To sell ");
                     }else
                     {
@@ -134,14 +133,14 @@ namespace HelloWorld
                 }
 
                 Thread.Sleep(1000);
-                this.hii = app._readModel.history;
-                Changed(nameof(hii));
+                this.history = app._readModel.history;
+                Changed(nameof(history));
             }catch(Exception ex)
             {
                 Changed(nameof(message3));
                 Changed(nameof(message1));
                 Changed(nameof(message2));
-                Changed(nameof(hii));
+                Changed(nameof(history));
             }
 
             this.Total = "" + app._readModel.Total;
@@ -152,8 +151,5 @@ namespace HelloWorld
         };
 
     }
-    public class data
-    {
-        public string value { get; set; }
-    }
+    
 }
