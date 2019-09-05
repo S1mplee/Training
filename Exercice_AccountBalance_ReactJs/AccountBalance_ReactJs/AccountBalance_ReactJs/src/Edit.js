@@ -11,7 +11,6 @@ class Edit extends Component {
             daily: "",
             message:""
         };
-        this.handleme = this.handleme.bind(this);
         this.styles = {
             color: "green"
         };
@@ -27,9 +26,7 @@ class Edit extends Component {
     componentWillUnmount() {
         this.vm.$destroy();
     }
-    handleme() {
-        window.open(Navbar, '_blank');
-    };
+  
 
     render() {
         return (<div className='popup'>

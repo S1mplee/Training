@@ -9,6 +9,7 @@ namespace Reactjs_Account
     public class AccountViewModel : BaseVM
     {
         private readonly Service _accountService;
+
         private List<account> _list;
         public List<account> list
         {
@@ -44,13 +45,6 @@ namespace Reactjs_Account
             set { _message = value; Changed(nameof(message)); }
         }
 
-        private List<string> _IDS;
-        public List<string> IDS
-        {
-            get { return _IDS; }
-            set { _IDS = value; Changed(nameof(IDS)); }
-        }
-
         private Timer _timer;
 
         public AccountViewModel(Service service)
@@ -76,7 +70,9 @@ namespace Reactjs_Account
             {
                 if (string.IsNullOrEmpty(this.value)) throw new ArgumentException("Invalid Input !");
                 if (!int.TryParse(this.value, out int res)) throw new ArgumentException("The input Should be Number !");
-                if (string.IsNullOrEmpty(e)) throw new ArgumentException("");
+                if (res <= 0 ) throw new ArgumentException("The input Should be Postive !");
+                if (string.IsNullOrEmpty(e)) throw new ArgumentException("Invalid ID");
+
                 this._accountService._cmdHandler.Handle(new DeposeCash(Guid.Parse(e), int.Parse(this.value)));
                 // list = this._accountService._readModel.list;
             }
@@ -93,7 +89,9 @@ namespace Reactjs_Account
             {
                 if (string.IsNullOrEmpty(this.value)) throw new ArgumentException("Invalid Value !");
                 if (!int.TryParse(this.value, out int res)) throw new ArgumentException("The input Should be Number !");
+                if (res <= 0) throw new ArgumentException("The input Should be Postive !");
                 if (string.IsNullOrEmpty(e)) throw new ArgumentException("Invalid ID");
+
                 this._accountService._cmdHandler.Handle(new WithDrawCash(Guid.Parse(e), int.Parse(this.value)));
                 // list = this._accountService._readModel.list;
             }catch(Exception ex)
@@ -103,10 +101,7 @@ namespace Reactjs_Account
            
         };
 
-              public Action<string> transferid => e =>
-              {
-                  this.IDS.Add(e);
-              };
+             
 
         public Action<bool> clicked => _ =>
         {
@@ -128,7 +123,9 @@ namespace Reactjs_Account
             {
                 if (string.IsNullOrEmpty(this.value)) throw new ArgumentException("Invalid Value !");
                 if (!int.TryParse(this.value, out int res)) throw new ArgumentException("The input Should be Number !");
+                if (res <= 0) throw new ArgumentException("The input Should be Postive !");
                 if (string.IsNullOrEmpty(e)) throw new ArgumentException("Invalid ID");
+
                 var cmd = new TransferCash(Guid.Parse(e), res, DateTime.Now);
                 _accountService._cmdHandler.Handle(cmd);
             }catch(Exception ex)
@@ -149,9 +146,5 @@ namespace Reactjs_Account
 
     }
 
-    public class Account
-    {
-        public Guid id { get; set; }
-        public string name { get; set; }
-    }
+    
 }

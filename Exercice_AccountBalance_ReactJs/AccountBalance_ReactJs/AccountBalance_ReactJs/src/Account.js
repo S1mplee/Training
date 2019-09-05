@@ -9,18 +9,12 @@ class Account extends Component {
         this.vm = dotnetify.react.connect("AccountViewModel", this);
 
         this.state = {
-            counter: 0,
-            tags: [{ name: "Ali", Age: "18" }, { name: "Mohamed", Age: "20" }, { name: "Fathi", Age: "20" }],
-            age: 0,
             list: [],
             value: "",
-            g1: "",
-            g2: "",
             message: "",
             showPopup: false,
             ID:""
         };
-        this.handleme = this.handleme.bind(this);
         this.styles = {
             color: "green"
         };
@@ -45,9 +39,7 @@ class Account extends Component {
         }
     }
 
-    handleme () {
-        window.open(Navbar, '_blank');
-    };
+   
 
     
 
