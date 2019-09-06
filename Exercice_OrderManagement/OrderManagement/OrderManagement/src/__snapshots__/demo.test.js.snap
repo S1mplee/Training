@@ -1,0 +1,301 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` snapshot test 1`] = `
+<div
+  className="container contact-form"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="col"
+        >
+          <div
+            className="card border-danger mb-3 m-2"
+            style={
+              Object {
+                "width": "18rem",
+              }
+            }
+          >
+            <div
+              className="card-header"
+            >
+              Total Value :
+            </div>
+            <div
+              className="card-body text-danger"
+            >
+              <h5
+                className="card-title"
+              >
+                
+                 $
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <div
+          className="card border-primary  mb-3 m-2"
+          style={
+            Object {
+              "width": "20rem",
+            }
+          }
+        >
+          <div
+            className="card-header"
+          >
+            Assets :
+          </div>
+          <div
+            className="card-body text-primary "
+          >
+            <ul />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form
+    className="dd"
+    method="post"
+  >
+    <h3>
+      Send Order
+    </h3>
+    <label
+      style={
+        Object {
+          "color": "red",
+        }
+      }
+    >
+       
+      
+       
+    </label>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-6"
+      >
+        <div
+          className="form-group"
+        >
+          <label
+            className="m-2"
+            for="exampleFormControlTextarea6"
+            style={
+              Object {
+                "color": "green",
+              }
+            }
+          >
+            Action : 
+          </label>
+          <select
+            className="form-control"
+            onChange={[Function]}
+            value=""
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Choose...
+            </option>
+          </select>
+          <b />
+        </div>
+        <div
+          className="form-group"
+        >
+          <label
+            for="exampleFormControlTextarea6"
+            style={
+              Object {
+                "color": "green",
+              }
+            }
+          >
+            Price : 
+          </label>
+          <input
+            className="form-control"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Price"
+            value=""
+          />
+        </div>
+        <label
+          className="m-2"
+          style={
+            Object {
+              "color": "red",
+            }
+          }
+        >
+          
+        </label>
+        <div
+          className="form-group"
+        >
+          <label
+            for="exampleFormControlTextarea6"
+            style={
+              Object {
+                "color": "green",
+              }
+            }
+          >
+            Asset : 
+          </label>
+          <select
+            className="form-control"
+            onChange={[Function]}
+            value=""
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Choose...
+            </option>
+          </select>
+          <b />
+        </div>
+        <div
+          className="form-group"
+        >
+          <label
+            for="exampleFormControlTextarea6"
+            style={
+              Object {
+                "color": "green",
+              }
+            }
+          >
+            Quantite : 
+          </label>
+          <input
+            className="form-control"
+            onBlur={[Function]}
+            onChange={[Function]}
+            placeholder="Quantite"
+            value=""
+          />
+          <label
+            className="m-2"
+            style={
+              Object {
+                "color": "red",
+              }
+            }
+          >
+            
+          </label>
+        </div>
+        <div
+          className="form-group"
+        >
+          <input
+            className="btnContact"
+            name="btnSubmit"
+            onClick={[Function]}
+            type="button"
+            value="Send Order"
+          />
+        </div>
+      </div>
+      <div
+        className="col-md-6"
+      >
+        <div
+          className="form-group"
+        >
+          <div
+            className="form-group shadow-textarea"
+          >
+            <label
+              for="exampleFormControlTextarea6"
+              style={
+                Object {
+                  "color": "green",
+                }
+              }
+            >
+              History : 
+            </label>
+            <textarea
+              className="form-control z-depth-1"
+              id="exampleFormControlTextarea6"
+              placeholder="History."
+              rows="3"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`TotalValue : Testing Total prop Render 1`] = `
+<div
+  className="col"
+>
+  <div
+    className="card border-danger mb-3 m-2"
+    style={
+      Object {
+        "width": "18rem",
+      }
+    }
+  >
+    <div
+      className="card-header"
+    >
+      Total Value :
+    </div>
+    <div
+      className="card-body text-danger"
+    >
+      <h5
+        className="card-title"
+      >
+        900
+         $
+      </h5>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TotalValue : Testing dict prop Render 1`] = `
+<div
+  className="card-body text-primary "
+>
+  <ul>
+    <li>
+      Asset1
+       Quantite : 
+      5
+       Price : 
+      100
+    </li>
+  </ul>
+</div>
+`;

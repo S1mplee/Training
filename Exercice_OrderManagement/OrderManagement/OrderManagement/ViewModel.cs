@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TESTDICT;
 
-namespace HelloWorld
+namespace OrderManagement
 {
     public class ViewModel : BaseVM
     {
@@ -85,6 +85,10 @@ namespace HelloWorld
 
         }
 
+        public ViewModel()
+        {
+        }
+
         public Action<bool> ButtonClicked => e =>
         {
             try
@@ -143,6 +147,7 @@ namespace HelloWorld
                 Changed(nameof(message1));
                 Changed(nameof(message2));
                 Changed(nameof(history));
+                throw new InvalidOperationException();
             }
 
             this.Total = "" + App._readModel.Total;
