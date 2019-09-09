@@ -5,7 +5,7 @@ namespace Reactjs_Account
 {
     public class EditViewModel : BaseVM
     {
-        private readonly Service _accountService;
+        public readonly Service _accountService;
 
 
         private string _ID;
@@ -26,6 +26,10 @@ namespace Reactjs_Account
             daily = "";
             over = "";
             _accountService = service;
+        }
+
+        public EditViewModel()
+        {
         }
 
         public Action<string> ButtonClicked => e =>
@@ -65,6 +69,7 @@ namespace Reactjs_Account
             {
                 this.message = ex.Message;
                 Changed(nameof(this.message));
+                throw new ArgumentException("");
             }
            
         };

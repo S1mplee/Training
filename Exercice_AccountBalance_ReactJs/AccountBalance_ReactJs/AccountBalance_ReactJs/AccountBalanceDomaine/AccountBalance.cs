@@ -47,11 +47,13 @@ namespace TestAccountBalance
             Register<CashWithdrawn>(evt => this._cash -= evt.amount);
             Register<CashTransfered>(evt =>
             {
+              
+                this._cash -= evt.amount;
+                this._dailyTransfertAmount = this._dailyTransfertAmount + evt.amount;
+
                 if ((DateTime.Now - evt.TransferDate).TotalHours > 24)
                 { this._dailyTransfertAmount = 0; }
 
-                this._cash -= evt.amount;
-                this._dailyTransfertAmount = this._dailyTransfertAmount + evt.amount;
             });
             Register<OverDraftlimitSet>(evt => this._overdraft = evt.amount);
             Register<DailyWireTransfertLimitSet>(evt => this._wiretranferlimit = evt.amount);

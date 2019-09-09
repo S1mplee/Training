@@ -8,37 +8,31 @@ namespace Reactjs_Account
 {
     public class AccountViewModel : BaseVM
     {
-        private readonly Service _accountService;
+        public readonly Service _accountService;
 
         private List<account> _list;
-        public List<account> list
+        public List<account> list 
         {
             get { return _list; }
             set { _list = value; Changed(nameof(list)); }
         }
 
-        private string _value;
+        private string _value; // balance input 
         public string value
         {
             get { return _value; }
             set { _value = value; Changed(nameof(value)); }
         }
 
-        private string _name;
+        private string _name; // Account Name 
         public string name
         {
             get { return _name; }
             set { _name = value; Changed(nameof(name)); }
         }
 
-        private string _cash;
-        public string cash
-        {
-            get { return _cash; }
-            set { _cash = value; Changed(nameof(cash)); }
-        }
 
-        private string _message;
+        private string _message; // error message
         public string message
         {
             get { return _message; }
@@ -79,6 +73,7 @@ namespace Reactjs_Account
             catch (Exception ex)
             {
                 this.message = ex.Message;
+                throw new ArgumentException();
             }
 
         };
@@ -97,6 +92,7 @@ namespace Reactjs_Account
             }catch(Exception ex)
             {
                 this.message = ex.Message;
+                throw new ArgumentException();
             }
            
         };
@@ -114,6 +110,7 @@ namespace Reactjs_Account
             catch(Exception ex)
             {
                 this.message = ex.Message;
+                throw new ArgumentException();
             }
         };
 
@@ -131,6 +128,7 @@ namespace Reactjs_Account
             }catch(Exception ex)
             {
                 this.message = ex.Message;
+                throw new ArgumentException();
             }
        
 

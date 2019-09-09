@@ -77,11 +77,12 @@ namespace Account
 
         public void Handle(CashTransfered message)
         {
-            if ((DateTime.Now - message.TransferDate).TotalHours > 24)
-                list.Find(x => x.Id == message.id).DailyWireTransfetAchieved = 0;
-
+           
             list.Find(x => x.Id == message.id).cash -= message.amount;
             list.Find(x => x.Id == message.id).DailyWireTransfetAchieved += message.amount;
+
+            if ((DateTime.Now - message.TransferDate).TotalHours > 24)
+                list.Find(x => x.Id == message.id).DailyWireTransfetAchieved = 0;
         }
 
         public void Handle(OverDraftlimitSet message)
