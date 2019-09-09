@@ -3,6 +3,7 @@ using ReactiveDomain;
 using ReactiveDomain.EventStore;
 using ReactiveDomain.Foundation;
 using System;
+using System.Configuration;
 
 namespace TESTDICT
 {
@@ -15,7 +16,13 @@ namespace TESTDICT
         public CommandHandler cmd;
         public void Bootstrap()
         {
-            IEventStoreConnection esConnection = EventStoreConnection.Create("ConnectTo=tcp://admin:changeit@localhost:1113");
+            string port = ConfigurationManager.AppSettings["ES_PORT"];
+            string ip = ConfigurationManager.AppSettings["ES_IP"];
+            string pwd = ConfigurationManager.AppSettings["ES_PWD"];
+            string username = ConfigurationManager.AppSettings["ES_USERNAME"];
+
+
+            IEventStoreConnection esConnection = EventStoreConnection.Create("ConnectTo=tcp://" + username + ":" + pwd + "@" + ip + ":" + port);
             conn = new EventStoreConnectionWrapper(esConnection);
             esConnection.Connected += (_, __) => Console.WriteLine("Connected");
             esConnection.ConnectAsync().Wait();
