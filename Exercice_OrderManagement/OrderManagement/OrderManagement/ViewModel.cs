@@ -85,9 +85,7 @@ namespace OrderManagement
 
         }
 
-        public ViewModel()
-        {
-        }
+       
 
         public Action<bool> ButtonClicked => e =>
         {
