@@ -67,7 +67,7 @@ namespace Reactjs_Account
                 if (res <= 0 ) throw new ArgumentException("The input Should be Postive !");
                 if (string.IsNullOrEmpty(e)) throw new ArgumentException("Invalid ID");
 
-                this._accountService._cmdHandler.Handle(new DeposeCash(Guid.Parse(e), int.Parse(this.value)));
+                this._accountService.bus.Send(new DeposeCash(Guid.Parse(e), int.Parse(this.value)));
                 // list = this._accountService._readModel.list;
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ namespace Reactjs_Account
                 if (res <= 0) throw new ArgumentException("The input Should be Postive !");
                 if (string.IsNullOrEmpty(e)) throw new ArgumentException("Invalid ID");
 
-                this._accountService._cmdHandler.Handle(new WithDrawCash(Guid.Parse(e), int.Parse(this.value)));
+                this._accountService.bus.Send(new WithDrawCash(Guid.Parse(e), int.Parse(this.value)));
                 // list = this._accountService._readModel.list;
             }catch(Exception ex)
             {
@@ -104,7 +104,7 @@ namespace Reactjs_Account
             try
             {
                 if (string.IsNullOrEmpty(this.name) || string.IsNullOrEmpty(this.name)) throw new ArgumentException("Empty Inputs !");
-                this._accountService._cmdHandler.Handle(new CreateAccount(Guid.NewGuid(), this.name));
+                this._accountService.bus.Send(new CreateAccount(Guid.NewGuid(), this.name));
 
             }
             catch(Exception ex)
@@ -124,7 +124,7 @@ namespace Reactjs_Account
                 if (string.IsNullOrEmpty(e)) throw new ArgumentException("Invalid ID");
 
                 var cmd = new TransferCash(Guid.Parse(e), res, DateTime.Now);
-                _accountService._cmdHandler.Handle(cmd);
+                _accountService.bus.Send(cmd);
             }catch(Exception ex)
             {
                 this.message = ex.Message;

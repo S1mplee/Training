@@ -1,7 +1,9 @@
 ﻿using Account;
+using AccountBalance_ReactJs.AccountBalanceDomaine;
 using EventStore.ClientAPI;
 using ReactiveDomain.EventStore;
 using ReactiveDomain.Foundation;
+using ReactiveDomain.Messaging.Bus;
 using System.Configuration;
 
 namespace Reactjs_Account
@@ -9,9 +11,9 @@ namespace Reactjs_Account
     public class Service
     {
         public readonly AccountBalanceReadModel _readModel;
-        public readonly IRepository _repo;
-        public readonly AccountCommandHandler _cmdHandler;
-
+        private readonly IRepository _repo;
+        private readonly AccountCommandHandler _cmdHandler;
+        public Bus bus;
         public Service()
         {
             string port = ConfigurationManager.AppSettings["ES_PORT"];
@@ -33,6 +35,19 @@ namespace Reactjs_Account
 
             var listener = new StreamListener("Account", conn, namer,ser);
             _readModel = new AccountBalanceReadModel(() => listener);
+
+            bus = new Bus();
+
+            bus.RegisterHandler<CreateAccount>(_cmdHandler.Handle);
+            bus.RegisterHandler<DeposeCash>(_cmdHandler.Handle);
+            bus.RegisterHandler<DeposeCheque>(_cmdHandler.Handle);
+            bus.RegisterHandler<SetDailyTransfertLimit>(_cmdHandler.Handle);
+            bus.RegisterHandler<SetOverdraftLimit>(_cmdHandler.Handle);
+            bus.RegisterHandler<WithDrawCash>(_cmdHandler.Handle);
+            bus.RegisterHandler<TransferCash>(_cmdHandler.Handle);
+
+
+
         }
     }
 

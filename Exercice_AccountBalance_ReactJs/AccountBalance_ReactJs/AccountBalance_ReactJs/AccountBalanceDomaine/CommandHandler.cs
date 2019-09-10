@@ -1,13 +1,18 @@
-﻿using ReactiveDomain.Foundation;
-using ReactiveDomain.Messaging;
-using ReactiveDomain.Messaging.Bus;
+﻿using AccountBalance_ReactJs.AccountBalanceDomaine;
+using ReactiveDomain.Foundation;
 using System;
 using TestAccountBalance;
 
 namespace Account
 {
-    public class AccountCommandHandler : IHandleCommand<CreateAccount>, IHandleCommand<DeposeCheque>,
-        IHandleCommand<DeposeCash>, IHandleCommand<WithDrawCash>, IHandleCommand<TransferCash>
+    public class AccountCommandHandler  : 
+       HandleCommand<CreateAccount>, 
+        HandleCommand<DeposeCheque>,
+        HandleCommand<DeposeCash>, 
+        HandleCommand<WithDrawCash>,
+       HandleCommand<TransferCash>,
+       HandleCommand<SetDailyTransfertLimit>,
+        HandleCommand<SetOverdraftLimit>
     {
         private readonly IRepository _repo;
         public AccountCommandHandler(IRepository repo)
@@ -18,7 +23,7 @@ namespace Account
 
 
 
-        public CommandResponse Handle(CreateAccount command)
+        public void Handle(CreateAccount command)
         {
 
             if (_repo.TryGetById<AccountBalance>(command.Id, out AccountBalance acc) && acc != null)
@@ -28,11 +33,9 @@ namespace Account
             acc = new AccountBalance(command.Id, command.Holdername);
             _repo.Save(acc);
 
-
-            return command.Succeed();
         }
 
-        public CommandResponse Handle(SetDailyTransfertLimit command)
+        public void Handle(SetDailyTransfertLimit command)
         {
 
             if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc))
@@ -43,10 +46,9 @@ namespace Account
             _repo.Save(acc);
 
 
-            return command.Succeed();
         }
 
-        public CommandResponse Handle(SetOverdraftLimit command)
+        public void Handle(SetOverdraftLimit command)
         {
 
             if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc))
@@ -57,10 +59,9 @@ namespace Account
             _repo.Save(acc);
 
 
-            return command.Succeed();
         }
 
-        public CommandResponse Handle(DeposeCash command)
+        public void Handle(DeposeCash command)
         {
             if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc))
             {
@@ -68,10 +69,9 @@ namespace Account
             }
             acc.DeposeCash(command.amount);
             _repo.Save(acc);
-            return command.Succeed();
         }
 
-        public CommandResponse Handle(WithDrawCash command)
+        public void Handle(WithDrawCash command)
         {
             if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc))
             {
@@ -86,10 +86,9 @@ namespace Account
             {
                 _repo.Save(acc);
             }
-            return command.Succeed();
         }
 
-        public CommandResponse Handle(TransferCash command)
+        public void Handle(TransferCash command)
         {
             if (!_repo.TryGetById<AccountBalance>(command.id, out AccountBalance acc))
             {
@@ -105,10 +104,9 @@ namespace Account
                 _repo.Save(acc);
             }
 
-            return command.Succeed();
         }
 
-        public CommandResponse Handle(DeposeCheque command)
+        public void Handle(DeposeCheque command)
         {
             if (!_repo.TryGetById<AccountBalance>(command.Id, out AccountBalance acc))
             {
@@ -116,7 +114,6 @@ namespace Account
             }
             acc.DeposeCheque(command.amount, command.DepositDate);
             _repo.Save(acc);
-            return command.Succeed();
         }
     }
 

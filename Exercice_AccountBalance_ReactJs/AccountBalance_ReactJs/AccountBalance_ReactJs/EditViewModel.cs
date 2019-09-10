@@ -53,7 +53,7 @@ namespace Reactjs_Account
                 if (!string.IsNullOrEmpty(over))
                 {
                     var cmd = new SetOverdraftLimit(Guid.Parse(e), Over);
-                    _accountService._cmdHandler.Handle(cmd);
+                    _accountService.bus.Send(cmd);
                     this.message += "Set Over Draft Succes !";
                     Changed(nameof(message));
                 }
@@ -61,7 +61,7 @@ namespace Reactjs_Account
                 if (!string.IsNullOrEmpty(daily))
                 {
                     var cmd = new SetDailyTransfertLimit(Guid.Parse(e), Daily);
-                    _accountService._cmdHandler.Handle(cmd);
+                    _accountService.bus.Send(cmd);
                     this.message += " Set Daily Transfert limit Success !";
                     Changed(nameof(message));
                 }
