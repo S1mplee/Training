@@ -13,7 +13,7 @@ namespace Reactjs_Account
         public readonly AccountBalanceReadModel _readModel;
         private readonly IRepository _repo;
         private readonly AccountCommandHandler _cmdHandler;
-        public Bus bus;
+        public Dispatcher Bus;
         public Service()
         {
             string port = ConfigurationManager.AppSettings["ES_PORT"];
@@ -36,17 +36,17 @@ namespace Reactjs_Account
             var listener = new StreamListener("Account", conn, namer,ser);
             _readModel = new AccountBalanceReadModel(() => listener);
 
-            bus = new Bus();
+            Bus = new Dispatcher("MyDispatcher");
 
-            bus.RegisterHandler<CreateAccount>(_cmdHandler.Handle);
-            bus.RegisterHandler<DeposeCash>(_cmdHandler.Handle);
-            bus.RegisterHandler<DeposeCheque>(_cmdHandler.Handle);
-            bus.RegisterHandler<SetDailyTransfertLimit>(_cmdHandler.Handle);
-            bus.RegisterHandler<SetOverdraftLimit>(_cmdHandler.Handle);
-            bus.RegisterHandler<WithDrawCash>(_cmdHandler.Handle);
-            bus.RegisterHandler<TransferCash>(_cmdHandler.Handle);
+            Bus.Subscribe<CreateAccount>(_cmdHandler);
+            Bus.Subscribe<DeposeCash>(_cmdHandler);
+            Bus.Subscribe<DeposeCheque>(_cmdHandler);
+            Bus.Subscribe<SetDailyTransfertLimit>(_cmdHandler);
+            Bus.Subscribe<SetOverdraftLimit>(_cmdHandler);
+            Bus.Subscribe<WithDrawCash>(_cmdHandler);
+            Bus.Subscribe<TransferCash>(_cmdHandler);
 
-
+          
 
         }
     }
