@@ -9,6 +9,10 @@ namespace OrderManagement
 {
     public class ViewModel : BaseVM
     {
+        private int qts;
+        private decimal price;
+        private string Sellhistory;
+
         private string _price;
         public string Price
         {
@@ -85,75 +89,98 @@ namespace OrderManagement
 
         }
 
-       
 
         public Action<bool> ButtonClicked => e =>
         {
-            try
-            {
-                if (string.IsNullOrEmpty(SimpleDropDownValue) || string.IsNullOrEmpty(SimpleDropDownValue2))
-                {
-                    this.message3 = "You Should Pick Action and the Asset !";
-                    throw new InvalidOperationException("");
-                }
-                if (string.IsNullOrEmpty(Price) || string.IsNullOrEmpty(Qts)) {
-                    this.message1 = "Empty Fields !";
-                    this.message2 = "Empty Fields !";
-                    throw new ArgumentException("Empty Fields !"); }
-                if (!int.TryParse(Qts, out int qts))
-                {
-                    this.message2 = "Quantite should be numeric !";
-                    throw new ArgumentException("Quantite should be numeric !");
-                }
-                if (!decimal.TryParse(Price, out decimal price))
-                {
-                    this.message1 = "Price should be numeric !";
-                    throw new ArgumentException("Price should be numeric !"); }
-
-                if (qts <= 0 || price <= 0) throw new ArgumentException("Values Should Be postive !");
-
+                      
+              if (Verif_Selection() && verif_Inputs() && verif_inputs_values() )
+            { 
+                
                 var Cmd = new CreateOrder(Guid.NewGuid(), SimpleDropDownValue, SimpleDropDownValue2, price, qts);
 
-                if (SimpleDropDownValue.ToLower().Equals("sell"))
+                if (SimpleDropDownValue.ToLower().Equals("sell") && verif_Sell(Cmd))
                 {
-                    if (!App._readModel.Assets.TryGetValue(SimpleDropDownValue2, out OrderDetail or))
-                    {
-                        this.message3 = " You dont have Any Assets To sell";
-                        throw new InvalidOperationException("You dont have Any Assets To sell ");
-                    }
-                    else if (or.Quantite < qts)
-                    {
-                        this.history += " Can t Sell " + Cmd.Quantite + " " + Cmd.Asset + " Not Enough Quantite \n";
-                        throw new InvalidOperationException("You dont have Any Assets To sell ");
-                    }else
-                    {
-                        App.cmd.Handle(Cmd);
-                    }
+                        App.Bus.Send(Cmd);
+                    
                 }
-                else
+                else if(SimpleDropDownValue.ToLower().Equals("buy"))
                 {
-                    App.cmd.Handle(Cmd);
+                    App.Bus.Send(Cmd);
 
                 }
-
-                Thread.Sleep(1000);
-                this.history = App._readModel.history;
-                Changed(nameof(history));
-            }catch(Exception ex)
-            {
-                Changed(nameof(message3));
-                Changed(nameof(message1));
-                Changed(nameof(message2));
-                Changed(nameof(history));
-                throw new InvalidOperationException();
             }
-
+            Thread.Sleep(1000);
+            this.history = App._readModel.history;
+            this.history += this.Sellhistory;
+                Changed(nameof(history));
             this.Total = "" + App._readModel.Total;
 
             Changed(nameof(dict));
             Changed(nameof(Total));
+            Changed(nameof(message1));
+            Changed(nameof(message2));
+            Changed(nameof(message3));
+
 
         };
+
+
+        private bool Verif_Selection()
+        {
+            if (string.IsNullOrEmpty(SimpleDropDownValue) || string.IsNullOrEmpty(SimpleDropDownValue2))
+            {
+                this.message3 = "You Should Pick Action and the Asset !";
+                return false;
+            }
+            return true;
+        }
+
+        private bool verif_Inputs()
+        {
+            if (string.IsNullOrEmpty(Price) || string.IsNullOrEmpty(Qts))
+            {
+                this.message1 = "Empty Fields !";
+                this.message2 = "Empty Fields !";
+                return false;
+            }
+            return true;
+        }
+
+        private bool verif_inputs_values()
+        {
+            if (!int.TryParse(Qts, out  this.qts))
+            {
+                this.message2 = "Quantite should be numeric !";
+                return false;
+            }
+            if (!decimal.TryParse(Price, out this.price))
+            {
+                this.message1 = "Price should be numeric !";
+                return false;
+            }
+
+            if (qts <= 0 || price <= 0) return false;
+
+            return true;
+
+        }
+
+
+        private bool verif_Sell(CreateOrder Cmd)
+        {
+            if (!App._readModel.Assets.TryGetValue(SimpleDropDownValue2, out OrderDetail or))
+            {
+                this.message3 = " You dont have Any Assets To sell";
+                return false;
+            }
+            else if (or.Quantite < qts)
+            {
+                this.Sellhistory += " Can t Sell " + Cmd.Quantite + " " + Cmd.Asset + " Not Enough Quantite \n";
+                return false;
+            }
+
+            return true;
+        }
 
     }
     

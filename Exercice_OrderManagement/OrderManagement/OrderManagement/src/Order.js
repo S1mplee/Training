@@ -72,7 +72,6 @@ export default class Order extends React.Component {
 
                                 <select
                                     className="form-control"
-                                    value={this.state.SimpleDropDownValue}
                                     onChange={e => this.dispatchState({ SimpleDropDownValue: e.target.value })}
                                 >
                                     <option value="" disabled>
@@ -97,7 +96,6 @@ export default class Order extends React.Component {
 
                                 <select
                                     className="form-control"
-                                    value={this.state.SimpleDropDownValue2}
                                     onChange={e => this.dispatchState({ SimpleDropDownValue2: e.target.value })}
                                 >
                                     <option value="" disabled>
