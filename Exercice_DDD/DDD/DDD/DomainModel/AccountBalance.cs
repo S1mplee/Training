@@ -50,12 +50,13 @@ namespace DDD.DomainModel
             if (amount <= 0) throw new ArgumentException("invalid Amount");
 
             var ReleaseDate = GetReleaseDate(DepositDate);
+            var OldAmount = this._balance;
 
             var evt = new ChequeDeposed(this.Id,amount,DepositDate, ReleaseDate);
                 SetState(evt);
                 this.events.Add(evt);
             
-            if (_blocked == true )
+            if (_blocked == true && this._balance > OldAmount)
             {
                 var evt2 = new AccountUnBlocked(this.Id);
                 SetState(evt2);
