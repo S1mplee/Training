@@ -1,5 +1,4 @@
 ﻿using Account;
-using AccountBalance_ReactJs.AccountBalanceDomaine;
 using EventStore.ClientAPI;
 using ReactiveDomain.EventStore;
 using ReactiveDomain.Foundation;

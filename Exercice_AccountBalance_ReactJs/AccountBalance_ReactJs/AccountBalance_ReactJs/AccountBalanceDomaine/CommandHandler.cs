@@ -1,5 +1,4 @@
-﻿using AccountBalance_ReactJs.AccountBalanceDomaine;
-using ReactiveDomain.Foundation;
+﻿using ReactiveDomain.Foundation;
 using ReactiveDomain.Messaging;
 using ReactiveDomain.Messaging.Bus;
 using System;
@@ -8,12 +7,12 @@ using TestAccountBalance;
 namespace Account
 {
     public class AccountCommandHandler  : 
-       IHandleCommand<CreateAccount>, 
+        IHandleCommand<CreateAccount>, 
         IHandleCommand<DeposeCheque>,
         IHandleCommand<DeposeCash>, 
         IHandleCommand<WithDrawCash>,
-       IHandleCommand<TransferCash>,
-       IHandleCommand<SetDailyTransfertLimit>,
+        IHandleCommand<TransferCash>,
+        IHandleCommand<SetDailyTransfertLimit>,
         IHandleCommand<SetOverdraftLimit>
     {
         private readonly IRepository _repo;
